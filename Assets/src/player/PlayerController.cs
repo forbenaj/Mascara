@@ -18,8 +18,8 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private float airDeceleration = 35f;
 
     [Header("Ground Check")]
-    [SerializeField] private Transform groundCheck;
-    [SerializeField] private float groundRadius = 0.2f;
+    [SerializeField] private GroundCheck groundCheck;
+    [SerializeField] private float legacyGroundRadius = 0.2f;
     [SerializeField] private LayerMask groundLayers;
 
     [Header("Attack")]
@@ -132,13 +132,15 @@ public class PlayerController : MonoBehaviour
 
     private void UpdateGrounded()
     {
-        if (groundCheck == null)
+        if (groundCheck != null)
         {
-            isGrounded = false;
-            return;
+            isGrounded = groundCheck.IsGrounded;
         }
-
-        isGrounded = Physics2D.OverlapCircle(groundCheck.position, groundRadius, groundLayers);
+        else
+        {
+            // fallback to old overlap method if not wired
+            isGrounded = false;
+        }
     }
 
     private void OnJump(InputAction.CallbackContext context)
@@ -227,14 +229,17 @@ public class PlayerController : MonoBehaviour
 
     private void OnDrawGizmosSelected()
     {
-        if (groundCheck == null)
+        if (groundCheck != null)
         {
-            return;
+            Gizmos.color = groundCheck.IsGrounded ? Color.green : Color.yellow;
+            var col = groundCheck.GetComponent<Collider2D>() as BoxCollider2D;
+            if (col != null)
+            {
+                Gizmos.matrix = groundCheck.transform.localToWorldMatrix;
+                Gizmos.DrawWireCube(col.offset, col.size);
+            }
+            Gizmos.matrix = Matrix4x4.identity;
         }
-
-        Gizmos.color = Color.yellow;
-        Gizmos.DrawWireSphere(groundCheck.position, groundRadius);
-
         if (attackPoint != null)
         {
             Gizmos.color = new Color(1f, 0.3f, 0.1f, 0.8f);

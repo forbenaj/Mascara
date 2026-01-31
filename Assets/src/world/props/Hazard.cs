@@ -24,12 +24,24 @@ public class Hazard : MonoBehaviour
 
     private void OnDrawGizmos()
     {
-        Gizmos.color = new Color(1f, 0.2f, 0.2f, 0.4f);
-        var col = GetComponent<Collider2D>() as BoxCollider2D;
-        if (col != null)
+        Gizmos.color = new Color(1f, 0.2f, 0.2f, 0.35f);
+        var col = GetComponent<Collider2D>();
+        if (col == null) return;
+
+        Gizmos.matrix = transform.localToWorldMatrix;
+
+        switch (col)
         {
-            Gizmos.matrix = transform.localToWorldMatrix;
-            Gizmos.DrawCube(col.offset, col.size);
+            case BoxCollider2D box:
+                Gizmos.DrawCube(box.offset, box.size);
+                break;
+            case CircleCollider2D circle:
+                Gizmos.DrawSphere(circle.offset, circle.radius);
+                break;
+            case CapsuleCollider2D capsule:
+                // approximate with box for quick viz
+                Gizmos.DrawCube(capsule.offset, capsule.size);
+                break;
         }
     }
 }

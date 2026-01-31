@@ -131,12 +131,27 @@ public class Room : MonoBehaviour
         box.isTrigger = false;
     }
 
-    private void OnDrawGizmosSelected()
+    private void OnDrawGizmos()
     {
         Gizmos.color = Color.cyan;
         Gizmos.matrix = transform.localToWorldMatrix;
         var center = Vector3.zero;
         var size3 = new Vector3(size.x, size.y, 0.1f);
         Gizmos.DrawWireCube(center, size3);
+
+        // Draw bounds colliders
+        var boundsRoot = transform.Find(BoundsRootName);
+        if (boundsRoot != null)
+        {
+            Gizmos.color = new Color(0f, 1f, 1f, 0.25f);
+            foreach (Transform child in boundsRoot)
+            {
+                var box = child.GetComponent<BoxCollider2D>();
+                if (box == null) continue;
+                Gizmos.matrix = child.localToWorldMatrix;
+                Gizmos.DrawCube(box.offset, box.size);
+            }
+            Gizmos.matrix = transform.localToWorldMatrix;
+        }
     }
 }

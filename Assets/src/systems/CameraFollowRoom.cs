@@ -13,6 +13,7 @@ public class CameraFollowRoom : MonoBehaviour
     private Transform _player;
     private RoomManager _roomManager;
     private Vector3 _velocity;
+    private Room _lastRoom;
 
     private void Awake()
     {
@@ -24,7 +25,7 @@ public class CameraFollowRoom : MonoBehaviour
 #endif
     }
 
-    private void LateUpdate()
+    private void FixedUpdate()
     {
         if (_roomManager == null || _roomManager.CurrentRoom == null) return;
 
@@ -36,6 +37,9 @@ public class CameraFollowRoom : MonoBehaviour
         }
 
         var room = _roomManager.CurrentRoom;
+        bool roomChanged = room != _lastRoom;
+        _lastRoom = room;
+
         var roomPos = room.transform.position;
         var halfCam = new Vector2(_cam.orthographicSize * _cam.aspect, _cam.orthographicSize);
 
@@ -59,6 +63,54 @@ public class CameraFollowRoom : MonoBehaviour
             targetPos = new Vector3(x, y, transform.position.z);
         }
 
-        transform.position = Vector3.SmoothDamp(transform.position, targetPos, ref _velocity, smoothTime);
+        if (roomChanged)
+        {
+            SnapInternal(targetPos, room);
+        }
+        else
+        {
+            transform.position = Vector3.SmoothDamp(transform.position, targetPos, ref _velocity, smoothTime);
+        }
+    }
+
+    // Called by RoomManager on room switch to snap instantly.
+    public void SnapToRoom(Room room, Transform player)
+    {
+        _roomManager ??= room != null ? room.GetComponentInParent<RoomManager>() : _roomManager;
+        _player = player != null ? player : _player;
+        if (room == null) return;
+
+        var targetPos = CalculateTarget(room, _player);
+        SnapInternal(targetPos, room);
+    }
+
+    private void SnapInternal(Vector3 targetPos, Room room)
+    {
+        _velocity = Vector3.zero;
+        _lastRoom = room;
+        transform.position = targetPos;
+    }
+
+    private Vector3 CalculateTarget(Room room, Transform player)
+    {
+        var roomPos = room.transform.position;
+        var halfCam = new Vector2(_cam.orthographicSize * _cam.aspect, _cam.orthographicSize);
+        var halfRoom = room.size * 0.5f;
+        var min = roomPos - (Vector3)halfRoom;
+        var max = roomPos + (Vector3)halfRoom;
+
+        bool fitsX = room.size.x <= halfCam.x * 2f;
+        bool fitsY = room.size.y <= halfCam.y * 2f;
+
+        if (fitsX && fitsY)
+        {
+            return new Vector3(roomPos.x, roomPos.y, transform.position.z);
+        }
+        else
+        {
+            float x = Mathf.Clamp(player != null ? player.position.x : roomPos.x, min.x + halfCam.x, max.x - halfCam.x);
+            float y = Mathf.Clamp(player != null ? player.position.y : roomPos.y, min.y + halfCam.y, max.y - halfCam.y);
+            return new Vector3(x, y, transform.position.z);
+        }
     }
 }

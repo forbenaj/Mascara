@@ -5,6 +5,7 @@
 [Bb]uild/
 [Bb]uilds/
 [Ll]ogs/
+[Ll]ogs/
 [Uu]ser[Ss]ettings/
 
 # Unity cache / packages
@@ -23,4 +24,3 @@ Library/PackageCache/
 # OS
 .DS_Store
 Thumbs.db
-

@@ -1,15 +1,14 @@
-# Unity
-[Ll]ibrary/
-[Tt]emp/
-[Oo]bj/
-[Bb]uild/
-[Bb]uilds/
-[Ll]ogs/
-[Ll]ogs/
-[Uu]ser[Ss]ettings/
+# Unity (generated)
+/Library/
+/Temp/
+/Obj/
+/Build/
+/Builds/
+/Logs/
+/UserSettings/
 
 # Unity cache / packages
-Library/PackageCache/
+/Library/PackageCache/
 
 # Visual Studio / Rider
 .vs/

@@ -63,12 +63,20 @@ public class MovingPlatform : MonoBehaviour
         }
     }
 
-    private void OnDrawGizmosSelected()
+    private void OnDrawGizmos()
     {
         Gizmos.color = Color.green;
         var start = Application.isPlaying ? _startPos : transform.position;
         var end = Application.isPlaying ? _endPos : transform.position + (Vector3)endOffset;
         Gizmos.DrawLine(start, end);
         Gizmos.DrawSphere(end, 0.1f);
+
+        var box = GetComponent<BoxCollider2D>();
+        if (box != null)
+        {
+            Gizmos.matrix = transform.localToWorldMatrix;
+            Gizmos.color = new Color(0.2f, 1f, 0.2f, 0.35f);
+            Gizmos.DrawCube(box.offset, box.size);
+        }
     }
 }

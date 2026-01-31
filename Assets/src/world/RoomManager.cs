@@ -57,7 +57,29 @@ public class RoomManager : MonoBehaviour
             player = FindPlayer();
 
         if (player != null)
-            player.position = room.transform.position + (Vector3)spawnOffset;
+        {
+            Vector3 pos = room.transform.position + (Vector3)spawnOffset;
+
+            // If no offset provided, use a SpawnPoint inside the room if present.
+            if (spawnOffset == Vector2.zero)
+            {
+                var spawn = room.GetComponentInChildren<SpawnPoint>();
+                if (spawn != null)
+                    pos = spawn.transform.position;
+            }
+
+            player.position = pos;
+        }
+
+        // Snap camera to new room before OnEnter side-effects.
+        CameraFollowRoom[] cams;
+#if UNITY_2022_2_OR_NEWER
+        cams = Object.FindObjectsByType<CameraFollowRoom>(FindObjectsSortMode.None);
+#else
+        cams = Object.FindObjectsOfType<CameraFollowRoom>();
+#endif
+        foreach (var cam in cams)
+            cam.SnapToRoom(room, player);
 
         _current.OnEnter();
     }

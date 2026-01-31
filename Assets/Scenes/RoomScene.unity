@@ -663,7 +663,7 @@ MonoBehaviour:
   attackBoxSize: {x: 1.2, y: 0.8}
   attackLayers:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 64
   attackDuration: 0.2
   animator: {fileID: 1467387793}
   spriteRenderer: {fileID: 1467387794}

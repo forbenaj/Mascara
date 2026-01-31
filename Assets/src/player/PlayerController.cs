@@ -38,7 +38,6 @@ public class PlayerController : MonoBehaviour
     private bool facingLeft;
     private Vector3 attackPointLocal;
     private static readonly int AnimIsMoving = Animator.StringToHash("IsMoving");
-    private static readonly int AnimSpeed = Animator.StringToHash("Speed");
     private static readonly int AnimAttack = Animator.StringToHash("Attack");
 
     private void Awake()
@@ -223,7 +222,6 @@ public class PlayerController : MonoBehaviour
             return;
 
         float speed = Mathf.Abs(moveX);
-        animator.SetFloat(AnimSpeed, speed);
         animator.SetBool(AnimIsMoving, speed > 0.01f);
     }
 

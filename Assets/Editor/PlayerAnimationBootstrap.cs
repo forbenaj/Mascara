@@ -11,7 +11,8 @@ public static class PlayerAnimationBootstrap
     private const string ControllerPath = AnimFolder + "/Player.controller";
     private const string IdleClipPath = AnimFolder + "/Idle.anim";
     private const string MoveClipPath = AnimFolder + "/Move.anim";
-    private const string HitClipPath = AnimFolder + "/Hit.anim";
+    private const string AttackClipPath = AnimFolder + "/Attack.anim";
+    private const string FoxControllerPath = "Assets/Art/characters/fox/fox_animator.controller";
     private const string PlayerPrefabPath = "Assets/Prefabs/Player/Player.prefab";
     private const string VisualsName = "Visuals";
     private const string AttackPointName = "AttackPoint";
@@ -19,37 +20,68 @@ public static class PlayerAnimationBootstrap
     [InitializeOnLoadMethod]
     private static void EnsurePlayerAnimator()
     {
-        if (!Directory.Exists(AnimFolder))
-            Directory.CreateDirectory(AnimFolder);
+        var controllerPath = ResolveControllerPath();
+        var animFolder = Path.GetDirectoryName(controllerPath);
+        if (!string.IsNullOrEmpty(animFolder) && !Directory.Exists(animFolder))
+            Directory.CreateDirectory(animFolder);
 
-        var idle = EnsureClip("Idle", IdleClipPath);
-        var move = EnsureClip("Move", MoveClipPath);
-        var hit = EnsureClip("Hit", HitClipPath);
+        var idle = EnsureClip("Idle", ResolveIdleClipPath(controllerPath));
+        var move = EnsureClip("Move", ResolveMoveClipPath(controllerPath));
+        var attack = EnsureClip("Attack", ResolveAttackClipPath(controllerPath));
 
-        var controller = AssetDatabase.LoadAssetAtPath<AnimatorController>(ControllerPath);
+        var controller = AssetDatabase.LoadAssetAtPath<AnimatorController>(controllerPath);
         if (controller == null)
-            controller = AnimatorController.CreateAnimatorControllerAtPath(ControllerPath);
+            controller = AnimatorController.CreateAnimatorControllerAtPath(controllerPath);
 
         EnsureParameter(controller, "IsMoving", AnimatorControllerParameterType.Bool);
-        EnsureParameter(controller, "Speed", AnimatorControllerParameterType.Float);
         EnsureParameter(controller, "Attack", AnimatorControllerParameterType.Trigger);
+        RemoveParameter(controller, "Speed");
 
         var sm = controller.layers[0].stateMachine;
         var idleState = EnsureState(sm, "Idle", idle, new Vector3(0f, 0f));
         var moveState = EnsureState(sm, "Move", move, new Vector3(250f, 0f));
-        var hitState = EnsureState(sm, "Hit", hit, new Vector3(125f, -150f));
+        var attackState = EnsureState(sm, "Attack", attack, new Vector3(125f, -150f));
         sm.defaultState = idleState;
 
         EnsureTransition(idleState, moveState, "IsMoving", true);
         EnsureTransition(moveState, idleState, "IsMoving", false);
 
-        EnsureAnyStateToHit(sm, hitState);
-        EnsureExitToIdle(hitState, idleState);
+        EnsureAnyStateToAttack(sm, attackState);
+        EnsureExitToIdle(attackState, idleState);
 
         EditorUtility.SetDirty(controller);
         AssetDatabase.SaveAssets();
 
         AssignControllerToPlayerPrefab(controller);
+    }
+
+    private static string ResolveControllerPath()
+    {
+        return File.Exists(FoxControllerPath) ? FoxControllerPath : ControllerPath;
+    }
+
+    private static string ResolveIdleClipPath(string controllerPath)
+    {
+        if (controllerPath == FoxControllerPath)
+        {
+            var path = Path.GetDirectoryName(controllerPath) + "/idle.anim";
+            if (File.Exists(path)) return path;
+        }
+        return IdleClipPath;
+    }
+
+    private static string ResolveMoveClipPath(string controllerPath)
+    {
+        if (controllerPath == FoxControllerPath)
+            return Path.GetDirectoryName(controllerPath) + "/move.anim";
+        return MoveClipPath;
+    }
+
+    private static string ResolveAttackClipPath(string controllerPath)
+    {
+        if (controllerPath == FoxControllerPath)
+            return Path.GetDirectoryName(controllerPath) + "/attack.anim";
+        return AttackClipPath;
     }
 
     private static AnimationClip EnsureClip(string name, string path)
@@ -68,6 +100,13 @@ public static class PlayerAnimationBootstrap
         if (controller.parameters.Any(p => p.name == name))
             return;
         controller.AddParameter(name, type);
+    }
+
+    private static void RemoveParameter(AnimatorController controller, string name)
+    {
+        var existing = controller.parameters.FirstOrDefault(p => p.name == name);
+        if (existing == null) return;
+        controller.RemoveParameter(existing);
     }
 
     private static AnimatorState EnsureState(AnimatorStateMachine sm, string name, Motion motion, Vector3 position)
@@ -103,12 +142,12 @@ public static class PlayerAnimationBootstrap
         }
     }
 
-    private static void EnsureAnyStateToHit(AnimatorStateMachine sm, AnimatorState hitState)
+    private static void EnsureAnyStateToAttack(AnimatorStateMachine sm, AnimatorState attackState)
     {
-        var existing = sm.anyStateTransitions.FirstOrDefault(t => t.destinationState == hitState);
+        var existing = sm.anyStateTransitions.FirstOrDefault(t => t.destinationState == attackState);
         if (existing == null)
         {
-            existing = sm.AddAnyStateTransition(hitState);
+            existing = sm.AddAnyStateTransition(attackState);
             existing.hasExitTime = false;
             existing.duration = 0.05f;
         }

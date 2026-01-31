@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 8911706074606286233}
   - component: {fileID: 8056727962731194824}
   - component: {fileID: 5788799499687043095}
+  - component: {fileID: 6568566472006327617}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -136,6 +137,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::PlayerController
   moveAction: {fileID: -1680190386980627800, guid: 2bcd2660ca9b64942af0de543d8d7100, type: 3}
   jumpAction: {fileID: -2099379676528639254, guid: 2bcd2660ca9b64942af0de543d8d7100, type: 3}
+  attackAction: {fileID: 0}
   moveSpeed: 14
   jumpForce: 10
   groundAcceleration: 80
@@ -147,6 +149,14 @@ MonoBehaviour:
   groundLayers:
     serializedVersion: 2
     m_Bits: 0
+  attackPoint: {fileID: 0}
+  attackBoxSize: {x: 1.2, y: 0.8}
+  attackLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  attackDuration: 0.2
+  animator: {fileID: 0}
+  spriteRenderer: {fileID: 0}
 --- !u!70 &5788799499687043095
 CapsuleCollider2D:
   m_ObjectHideFlags: 0
@@ -184,6 +194,28 @@ CapsuleCollider2D:
   m_Offset: {x: 0, y: 0}
   m_Size: {x: 1, y: 2}
   m_Direction: 0
+--- !u!95 &6568566472006327617
+Animator:
+  serializedVersion: 7
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1289387364030516732}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: a5fe511c6b42a700c9e6072d647b0aef, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_AnimatePhysics: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!1 &7524403082302929552
 GameObject:
   m_ObjectHideFlags: 0

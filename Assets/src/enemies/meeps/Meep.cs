@@ -21,6 +21,13 @@ public class Meep : MonoBehaviour
     public int touchDamage = 1;
     [Tooltip("Capas con las que rebotará (muros laterales).")]
     public LayerMask wallMask;
+    [Header("Ground Check")]
+    [Tooltip("Punto de chequeo de suelo (opcional).")]
+    public Transform groundCheck;
+    [Tooltip("Radio del chequeo de suelo.")]
+    public float groundRadius = 0.15f;
+    [Tooltip("Capas consideradas suelo.")]
+    public LayerMask groundMask;
 
     [Header("Events (assign in editor)")]
     public UnityEngine.Events.UnityEvent onDeath;
@@ -34,6 +41,8 @@ public class Meep : MonoBehaviour
     private SpriteRenderer _sr;
     private int _dir = 1;
     private bool _maskAttached;
+    private bool _isGrounded;
+    private float _baseGravity;
 
     private void Awake()
     {
@@ -42,6 +51,7 @@ public class Meep : MonoBehaviour
         _sr = GetComponent<SpriteRenderer>();
 
         _rb.gravityScale = 3f;
+        _baseGravity = _rb.gravityScale;
         _rb.freezeRotation = true;
 
         int variance = Random.Range(-hitVariance, hitVariance + 1);
@@ -85,14 +95,17 @@ public class Meep : MonoBehaviour
         {
             case State.Falling:
                 _col.isTrigger = false;
+                _rb.gravityScale = _baseGravity;
                 break;
             case State.Dormant:
                 _col.isTrigger = true; // sin colisión ni daño
+                _rb.gravityScale = 0f;
                 _rb.linearVelocity = Vector2.zero;
                 StartCoroutine(DormantRoutine());
                 break;
             case State.Active:
                 _col.isTrigger = false;
+                _rb.gravityScale = _baseGravity;
                 _dir = Random.value < 0.5f ? -1 : 1;
                 break;
         }
@@ -106,6 +119,13 @@ public class Meep : MonoBehaviour
 
     private void FixedUpdate()
     {
+        UpdateGrounded();
+
+        if (_state == State.Active && !_isGrounded)
+        {
+            SetState(State.Falling);
+        }
+
         if (_state != State.Active) return;
         _rb.linearVelocity = new Vector2(_dir * moveSpeed, _rb.linearVelocity.y);
 
@@ -119,6 +139,24 @@ public class Meep : MonoBehaviour
             _dir *= -1;
             if (_sr) _sr.flipX = _dir < 0;
         }
+    }
+
+    private void UpdateGrounded()
+    {
+        if (groundCheck == null)
+        {
+            _isGrounded = false;
+            return;
+        }
+
+        _isGrounded = Physics2D.OverlapCircle(groundCheck.position, groundRadius, groundMask);
+    }
+
+    private void OnDrawGizmosSelected()
+    {
+        if (groundCheck == null) return;
+        Gizmos.color = Color.yellow;
+        Gizmos.DrawWireSphere(groundCheck.position, groundRadius);
     }
 
     private void OnCollisionEnter2D(Collision2D collision)

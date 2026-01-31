@@ -8,10 +8,17 @@ public class RoomManager : MonoBehaviour
     [Tooltip("Room to start in. If empty, first child Room is used.")]
     public string startRoomId;
 
+    [Tooltip("Offset to place the player when spawning in the first room.")]
+    public Vector2 startSpawnOffset = Vector2.zero;
+
+    [Tooltip("Player tag for teleport/spawn.")]
+    public string playerTag = "Player";
+
     [Tooltip("Rooms registered in the scene (auto-filled on Awake if empty).")]
     public List<Room> rooms = new List<Room>();
 
     private Room _current;
+    public Room CurrentRoom => _current;
 
     private void Awake()
     {
@@ -30,10 +37,11 @@ public class RoomManager : MonoBehaviour
             ? rooms.FirstOrDefault(r => r.roomId == startRoomId)
             : rooms[0];
 
-        SetCurrentRoom(target);
+        var player = FindPlayer();
+        SetCurrentRoom(target, startSpawnOffset, player);
     }
 
-    public void SetCurrentRoom(Room room)
+    public void SetCurrentRoom(Room room, Vector2 spawnOffset = default, Transform player = null)
     {
         if (room == null) return;
         _current = room;
@@ -45,8 +53,20 @@ public class RoomManager : MonoBehaviour
                 r.gameObject.SetActive(active);
         }
 
+        if (player == null)
+            player = FindPlayer();
+
+        if (player != null)
+            player.position = room.transform.position + (Vector3)spawnOffset;
+
         _current.OnEnter();
     }
 
     public Room GetRoomById(string id) => rooms.FirstOrDefault(r => r.roomId == id);
+
+    private Transform FindPlayer()
+    {
+        var go = GameObject.FindGameObjectWithTag(playerTag);
+        return go != null ? go.transform : null;
+    }
 }

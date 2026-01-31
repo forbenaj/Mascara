@@ -342,6 +342,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::RoomManager
   startRoomId: Spawn
+  startSpawnOffset: {x: 0, y: 0}
+  playerTag: Player
   rooms:
   - {fileID: 1319014357}
   - {fileID: 1858421322}
@@ -375,7 +377,7 @@ GameObject:
   - component: {fileID: 1254304097}
   m_Layer: 0
   m_Name: Player
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -866,6 +868,7 @@ GameObject:
   - component: {fileID: 1915865264}
   - component: {fileID: 1915865267}
   - component: {fileID: 1915865268}
+  - component: {fileID: 1915865269}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -1006,6 +1009,20 @@ MonoBehaviour:
   target: {fileID: 1254304096}
   offset: {x: 0, y: 2.5, z: -10}
   followSpeed: 6
+--- !u!114 &1915865269
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1915865263}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dd64edea6a12e6f3ca9429b7fe5c2549, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::CameraFollowRoom
+  playerTag: Player
+  smoothTime: 0.08
 --- !u!1 &2103920897
 GameObject:
   m_ObjectHideFlags: 0

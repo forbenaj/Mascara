@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2809017543333477886}
   - component: {fileID: 7170466229002929867}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: North
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -127,6 +127,7 @@ MonoBehaviour:
   wallThickness: 0.5
   roomId: Room
   obstaclesRoot: {fileID: 0}
+  lockDoorsOnEnter: 0
 --- !u!1 &2212208461068508538
 GameObject:
   m_ObjectHideFlags: 0
@@ -137,7 +138,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1443314447489692482}
   - component: {fileID: 5316016176189697284}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: South
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -250,7 +251,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7983530463354730819}
   - component: {fileID: 6295713184672792819}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: West
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -328,7 +329,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1892118652647835106}
   - component: {fileID: 8085175347868958252}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: East
   m_TagString: Untagged
   m_Icon: {fileID: 0}

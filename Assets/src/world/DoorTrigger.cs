@@ -33,8 +33,6 @@ public class DoorTrigger : MonoBehaviour
             return;
         }
 
-        // mueve jugador
-        other.transform.position = destRoom.transform.position + (Vector3)_door.targetSpawnOffset;
-        manager.SetCurrentRoom(destRoom);
+        manager.SetCurrentRoom(destRoom, _door.targetSpawnOffset, other.transform);
     }
 }

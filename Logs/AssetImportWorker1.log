@@ -571,3 +571,89 @@ Received Import Request.
 Start importing Assets/Settings/UniversalRP.asset using Guid(681886c5eb7344803b6206f758bf0b1c) Importer(815301076,1909f56bfc062723c751e8b465ee728b) (PreviewImporter) -> (artifact id: 'bf385e22c4eb99ed4b0458ac61d8fec4') in 0.00074325 seconds
 Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 0
 
+========================================================================
+Received Import Request.
+  Time since last request: 281.022606 seconds.
+  path: Assets/Shaders
+  artifactKey: Guid(1897a9b6432ebb6c3a3a252867364ed4) Importer(2089858483,b0f066a214c2f5e87bad3c948f4d605d)
+Start importing Assets/Shaders using Guid(1897a9b6432ebb6c3a3a252867364ed4) Importer(2089858483,b0f066a214c2f5e87bad3c948f4d605d) (ScriptedImporter) -> (artifact id: 'b2b5ff18702e14786298ace70e1e1606') in 0.054346355 seconds
+Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 1
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000026 seconds.
+  path: Assets/src/world
+  artifactKey: Guid(8a0015160724afbe1a3a6f00998d4723) Importer(2089858483,b0f066a214c2f5e87bad3c948f4d605d)
+Start importing Assets/src/world using Guid(8a0015160724afbe1a3a6f00998d4723) Importer(2089858483,b0f066a214c2f5e87bad3c948f4d605d) (ScriptedImporter) -> (artifact id: '38f0c839ca44b909f052cf72420e81cf') in 0.025363177 seconds
+Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 1
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000023 seconds.
+  path: Assets/Art/environments
+  artifactKey: Guid(b18793afee44f15278a8946cb3b684e6) Importer(2089858483,b0f066a214c2f5e87bad3c948f4d605d)
+Start importing Assets/Art/environments using Guid(b18793afee44f15278a8946cb3b684e6) Importer(2089858483,b0f066a214c2f5e87bad3c948f4d605d) (ScriptedImporter) -> (artifact id: '6d68e0a370675b9035080c82381b0192') in 0.04268752 seconds
+Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 1
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000024 seconds.
+  path: Assets/Fonts
+  artifactKey: Guid(6877697bcdafa5a74b45c0626b914bf6) Importer(2089858483,b0f066a214c2f5e87bad3c948f4d605d)
+Start importing Assets/Fonts using Guid(6877697bcdafa5a74b45c0626b914bf6) Importer(2089858483,b0f066a214c2f5e87bad3c948f4d605d) (ScriptedImporter) -> (artifact id: '8b411c88f8b12ec0eb4f8c0aa40f44bc') in 0.018962709 seconds
+Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 1
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000032 seconds.
+  path: Assets/src/ui
+  artifactKey: Guid(aca268f1d978d1665b3ba7e3de3afaf4) Importer(2089858483,b0f066a214c2f5e87bad3c948f4d605d)
+Start importing Assets/src/ui using Guid(aca268f1d978d1665b3ba7e3de3afaf4) Importer(2089858483,b0f066a214c2f5e87bad3c948f4d605d) (ScriptedImporter) -> (artifact id: 'd9e70782001618ea34d2d92caed04664') in 0.02857685 seconds
+Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 1
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000025 seconds.
+  path: Assets/src/world/rooms
+  artifactKey: Guid(dbebe665ed02d8b7c9315911e58fb4ac) Importer(2089858483,b0f066a214c2f5e87bad3c948f4d605d)
+Start importing Assets/src/world/rooms using Guid(dbebe665ed02d8b7c9315911e58fb4ac) Importer(2089858483,b0f066a214c2f5e87bad3c948f4d605d) (ScriptedImporter) -> (artifact id: '71922708758930565a8adeb1cbe4948a') in 0.012971974 seconds
+Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 1
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000020 seconds.
+  path: Assets/src/enemies/minions
+  artifactKey: Guid(779729a57729e15f7b22544972d18408) Importer(2089858483,b0f066a214c2f5e87bad3c948f4d605d)
+Start importing Assets/src/enemies/minions using Guid(779729a57729e15f7b22544972d18408) Importer(2089858483,b0f066a214c2f5e87bad3c948f4d605d) (ScriptedImporter) -> (artifact id: '8a1528f3eea41309164f775265150476') in 0.028543869 seconds
+Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 1
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.023261 seconds.
+  path: Assets/src
+  artifactKey: Guid(a3d4a05fdebb9bce2a655ebfb3564759) Importer(2089858483,b0f066a214c2f5e87bad3c948f4d605d)
+Start importing Assets/src using Guid(a3d4a05fdebb9bce2a655ebfb3564759) Importer(2089858483,b0f066a214c2f5e87bad3c948f4d605d) (ScriptedImporter) -> (artifact id: '3911425fb034bd2f0ec168d0bd3b8a27') in 0.03001291 seconds
+Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 1
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000065 seconds.
+  path: Assets/src/world/props
+  artifactKey: Guid(f3ac9cbd4faf912edb6a7475cdc0363c) Importer(2089858483,b0f066a214c2f5e87bad3c948f4d605d)
+Start importing Assets/src/world/props using Guid(f3ac9cbd4faf912edb6a7475cdc0363c) Importer(2089858483,b0f066a214c2f5e87bad3c948f4d605d) (ScriptedImporter) -> (artifact id: '7eaf8ed8fa991e8d5de293fc0ad078d4') in 0.014328336 seconds
+Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 1
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000021 seconds.
+  path: Assets/src/player
+  artifactKey: Guid(89598d94efb3458499effb5fca46ed53) Importer(2089858483,b0f066a214c2f5e87bad3c948f4d605d)
+Start importing Assets/src/player using Guid(89598d94efb3458499effb5fca46ed53) Importer(2089858483,b0f066a214c2f5e87bad3c948f4d605d) (ScriptedImporter) -> (artifact id: '17b1b8d9b609e84f9c91fb60ef5ea4bf') in 0.014125927 seconds
+Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 1
+
+Editor requested this worker to shutdown with reason: Scaling down because of idle timeout
+AssetImportWorker is now disconnected from the server
+Process exiting
+
+SDL leaked 2 allocations
+Internal: Possible leak. All render target surfaces should be removed from IdMap when destructed using RenderTargetMap::Remove(RenderSurfaceBase* rs).

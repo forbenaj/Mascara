@@ -1,5 +1,36 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!1 &769521208099913759
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2901591796277208794}
+  m_Layer: 0
+  m_Name: Face
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2901591796277208794
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 769521208099913759}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -0.009, y: 0.373, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 9145019376742470371}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &3248708858660192640
 GameObject:
   m_ObjectHideFlags: 0
@@ -32,6 +63,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
+  - {fileID: 2901591796277208794}
   - {fileID: 4330634383350560020}
   - {fileID: 8407071784080300129}
   - {fileID: 4192161254302839193}
@@ -94,7 +126,7 @@ MonoBehaviour:
   attackBoxSize: {x: 1.2, y: 0.8}
   attackLayers:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 128
   attackDuration: 0.2
   animator: {fileID: 2491851685359478857}
   spriteRenderer: {fileID: 2554235812716883465}
@@ -162,8 +194,8 @@ Transform:
   m_GameObject: {fileID: 4740755545846684035}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -0.03, y: -0.05, z: 0}
-  m_LocalScale: {x: 0.24963152, y: 0.24963152, z: 0.24963152}
+  m_LocalPosition: {x: -0.014, y: 0.067, z: 0}
+  m_LocalScale: {x: 0.28280756, y: 0.28280756, z: 0.28280756}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 9145019376742470371}

@@ -77,19 +77,25 @@ public class CameraFollowRoom : MonoBehaviour
         else
         {
             var newPos = Vector3.SmoothDamp(transform.position, targetPos, ref _velocity, smoothTime, Mathf.Infinity, Time.deltaTime);
-
-            bool clampX = !fitsX && (Mathf.Approximately(targetPos.x, min.x + halfCam.x) || Mathf.Approximately(targetPos.x, max.x - halfCam.x));
-            bool clampY = !fitsY && (Mathf.Approximately(targetPos.y, min.y + halfCam.y) || Mathf.Approximately(targetPos.y, max.y - halfCam.y));
-
-            if (clampX)
+            if (!fitsX)
             {
-                newPos.x = targetPos.x;
-                _velocity.x = 0f;
+                float minX = min.x + halfCam.x;
+                float maxX = max.x - halfCam.x;
+                if (newPos.x < minX || newPos.x > maxX)
+                {
+                    newPos.x = Mathf.Clamp(newPos.x, minX, maxX);
+                    _velocity.x = 0f;
+                }
             }
-            if (clampY)
+            if (!fitsY)
             {
-                newPos.y = targetPos.y;
-                _velocity.y = 0f;
+                float minY = min.y + halfCam.y;
+                float maxY = max.y - halfCam.y;
+                if (newPos.y < minY || newPos.y > maxY)
+                {
+                    newPos.y = Mathf.Clamp(newPos.y, minY, maxY);
+                    _velocity.y = 0f;
+                }
             }
 
             transform.position = newPos;

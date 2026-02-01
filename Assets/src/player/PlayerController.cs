@@ -22,6 +22,9 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private float legacyGroundRadius = 0.2f;
     [SerializeField] private LayerMask groundLayers;
 
+    [Header("Jump Animation")]
+    [SerializeField] private float midAirRangeWidth = 0.5f;
+
     [Header("Attack")]
     [SerializeField] private Transform attackPoint;
     [SerializeField] private Vector2 attackBoxSize = new Vector2(1.2f, 0.8f);
@@ -36,8 +39,11 @@ public class PlayerController : MonoBehaviour
     private bool isGrounded;
     private bool isAttacking;
     private bool facingLeft;
+    private int jumpState;
     private Vector3 attackPointLocal;
     private static readonly int AnimIsMoving = Animator.StringToHash("IsMoving");
+    private static readonly int AnimIsGrounded = Animator.StringToHash("IsGrounded");
+    private static readonly int AnimJumpState = Animator.StringToHash("JumpState");
     private static readonly int AnimAttack = Animator.StringToHash("Attack");
 
     private void Awake()
@@ -103,6 +109,7 @@ public class PlayerController : MonoBehaviour
     private void FixedUpdate()
     {
         UpdateGrounded();
+        UpdateJumpState();
 
         float moveX = 0f;
         if (moveAction != null)
@@ -226,6 +233,31 @@ public class PlayerController : MonoBehaviour
 
         float speed = Mathf.Abs(moveX);
         animator.SetBool(AnimIsMoving, speed > 0.01f);
+        animator.SetBool(AnimIsGrounded, isGrounded);
+        animator.SetInteger(AnimJumpState, jumpState);
+    }
+
+    private void UpdateJumpState()
+    {
+        if (isGrounded)
+        {
+            jumpState = -1;
+            return;
+        }
+
+        float vy = rb.linearVelocity.y;
+        if (vy > midAirRangeWidth)
+        {
+            jumpState = 0;
+        }
+        else if (vy < -midAirRangeWidth)
+        {
+            jumpState = 2;
+        }
+        else
+        {
+            jumpState = 1;
+        }
     }
 
     private void OnDrawGizmosSelected()

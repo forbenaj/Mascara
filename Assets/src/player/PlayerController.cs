@@ -30,7 +30,11 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private Vector2 attackBoxSize = new Vector2(1.2f, 0.8f);
     [SerializeField] private LayerMask attackLayers;
     [SerializeField] private float attackDuration = 0.2f;
+    [Tooltip("Impulse applied to enemies when hit (x=horizontal, y=up).")]
+    [SerializeField] private Vector2 attackKnockback = new Vector2(7f, 3f);
     [SerializeField] private AudioClip[] attackClips;
+    [SerializeField] private PlayerAttackHitbox attackHitbox;
+    [SerializeField] private PlayerSlashVfx slashVfx;
 
     [Header("Animation")]
     [SerializeField] private Animator animator;
@@ -50,6 +54,7 @@ public class PlayerController : MonoBehaviour
     private int jumpState;
     private Vector3 attackPointLocal;
     private Vector3 baseScale;
+    private float knockbackLockTimer;
     private static readonly int AnimIsMoving = Animator.StringToHash("IsMoving");
     private static readonly int AnimIsGrounded = Animator.StringToHash("IsGrounded");
     private static readonly int AnimJumpState = Animator.StringToHash("JumpState");
@@ -70,6 +75,14 @@ public class PlayerController : MonoBehaviour
             if (found != null)
                 attackPoint = found;
         }
+        if (attackHitbox == null)
+        {
+            var hitboxTransform = transform.Find("AttackHitbox");
+            if (hitboxTransform != null)
+                attackHitbox = hitboxTransform.GetComponent<PlayerAttackHitbox>();
+        }
+        if (slashVfx == null)
+            slashVfx = GetComponentInChildren<PlayerSlashVfx>(true);
 
         if (attackPoint != null)
             attackPointLocal = attackPoint.localPosition;
@@ -130,6 +143,13 @@ public class PlayerController : MonoBehaviour
             return;
         }
 
+        if (knockbackLockTimer > 0f)
+        {
+            knockbackLockTimer -= Time.fixedDeltaTime;
+            UpdateAnimator(rb.linearVelocity.x);
+            return;
+        }
+
         float moveX = 0f;
         if (moveAction != null)
         {
@@ -181,7 +201,7 @@ public class PlayerController : MonoBehaviour
 
     private void OnJump(InputAction.CallbackContext context)
     {
-        if (controlsLocked || !isGrounded)
+        if (controlsLocked || knockbackLockTimer > 0f || !isGrounded)
         {
             return;
         }
@@ -193,7 +213,7 @@ public class PlayerController : MonoBehaviour
 
     private void OnAttack(InputAction.CallbackContext context)
     {
-        if (controlsLocked || isAttacking)
+        if (controlsLocked || knockbackLockTimer > 0f || isAttacking)
         {
             return;
         }
@@ -207,6 +227,8 @@ public class PlayerController : MonoBehaviour
         if (animator != null)
             animator.SetTrigger(AnimAttack);
         PlayRandomAttackSfx();
+        if (slashVfx != null)
+            slashVfx.Play();
 
         DoAttackHit();
         yield return new WaitForSeconds(attackDuration);
@@ -222,6 +244,12 @@ public class PlayerController : MonoBehaviour
 
     private void DoAttackHit()
     {
+        if (attackHitbox != null)
+        {
+            attackHitbox.Activate(attackDuration, attackKnockback, transform.position);
+            return;
+        }
+
         if (attackPoint == null)
             return;
 
@@ -231,10 +259,19 @@ public class PlayerController : MonoBehaviour
             if (hit == null || hit.transform == transform)
                 continue;
 
+            var hurtbox = hit.GetComponent<MeepHurtbox>();
+            if (hurtbox != null)
+            {
+                hurtbox.ApplyHit(1, transform.position, attackKnockback);
+                continue;
+            }
+
             var meep = hit.GetComponent<Meep>();
             if (meep != null)
             {
-                meep.TakeHit(1);
+                if (meep.HasHurtbox)
+                    continue;
+                meep.TakeHit(1, transform.position, attackKnockback);
                 continue;
             }
 
@@ -300,6 +337,12 @@ public class PlayerController : MonoBehaviour
         {
             jumpState = 1;
         }
+    }
+
+    public void StartKnockbackLock(float duration)
+    {
+        if (duration <= 0f) return;
+        knockbackLockTimer = Mathf.Max(knockbackLockTimer, duration);
     }
 
     private void OnDrawGizmosSelected()

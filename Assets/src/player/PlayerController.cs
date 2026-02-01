@@ -27,13 +27,20 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private Vector2 attackBoxSize = new Vector2(1.2f, 0.8f);
     [SerializeField] private LayerMask attackLayers;
     [SerializeField] private float attackDuration = 0.2f;
+    [SerializeField] private AudioClip[] attackClips;
 
     [Header("Animation")]
     [SerializeField] private Animator animator;
     [SerializeField] private SpriteRenderer spriteRenderer;
 
+    [Header("Audio")]
+    [SerializeField] private AudioSource audioSource;
+    [SerializeField] private AudioClip jumpClip;
+    [SerializeField] private AudioClip landClip;
+
     private Rigidbody2D rb;
     private bool isGrounded;
+    private bool wasGrounded;
     private bool isAttacking;
     private bool facingLeft;
     private Vector3 attackPointLocal;
@@ -103,6 +110,7 @@ public class PlayerController : MonoBehaviour
     private void FixedUpdate()
     {
         UpdateGrounded();
+        HandleLandingSound();
 
         float moveX = 0f;
         if (moveAction != null)
@@ -144,6 +152,15 @@ public class PlayerController : MonoBehaviour
         }
     }
 
+    private void HandleLandingSound()
+    {
+        if (!wasGrounded && isGrounded && landClip != null && audioSource != null)
+        {
+            audioSource.PlayOneShot(landClip);
+        }
+        wasGrounded = isGrounded;
+    }
+
     private void OnJump(InputAction.CallbackContext context)
     {
         if (!isGrounded)
@@ -152,6 +169,8 @@ public class PlayerController : MonoBehaviour
         }
 
         rb.linearVelocity = new Vector2(rb.linearVelocity.x, jumpForce);
+        if (audioSource != null && jumpClip != null)
+            audioSource.PlayOneShot(jumpClip);
     }
 
     private void OnAttack(InputAction.CallbackContext context)
@@ -169,10 +188,18 @@ public class PlayerController : MonoBehaviour
         isAttacking = true;
         if (animator != null)
             animator.SetTrigger(AnimAttack);
+        PlayRandomAttackSfx();
 
         DoAttackHit();
         yield return new WaitForSeconds(attackDuration);
         isAttacking = false;
+    }
+
+    private void PlayRandomAttackSfx()
+    {
+        if (audioSource == null || attackClips == null || attackClips.Length == 0) return;
+        var clip = attackClips[Random.Range(0, attackClips.Length)];
+        if (clip != null) audioSource.PlayOneShot(clip);
     }
 
     private void DoAttackHit()

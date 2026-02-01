@@ -9,8 +9,12 @@ public class CameraFollowRoom : MonoBehaviour
     [Tooltip("Suavizado de seguimiento.")]
     public float smoothTime = 0.08f;
 
+    [Tooltip("Velocidad máxima del desplazamiento de cámara (previene tirones en caídas rápidas).")]
+    public float maxFollowSpeed = 35f;
+
     private Camera _cam;
     private Transform _player;
+    private Rigidbody2D _playerRb;
     private RoomManager _roomManager;
     private Vector3 _velocity;
     private Room _lastRoom;
@@ -35,7 +39,11 @@ public class CameraFollowRoom : MonoBehaviour
         if (_player == null)
         {
             var go = GameObject.FindGameObjectWithTag(playerTag);
-            if (go != null) _player = go.transform;
+            if (go != null)
+            {
+                _player = go.transform;
+                _playerRb = go.GetComponent<Rigidbody2D>();
+            }
             if (_player == null) return;
         }
 
@@ -63,8 +71,9 @@ public class CameraFollowRoom : MonoBehaviour
         }
         else
         {
-            float x = Mathf.Clamp(_player.position.x, min.x + halfCam.x, max.x - halfCam.x);
-            float y = Mathf.Clamp(_player.position.y, min.y + halfCam.y, max.y - halfCam.y);
+            Vector3 playerPos = _playerRb ? (Vector3)_playerRb.position : _player.position;
+            float x = Mathf.Clamp(playerPos.x, min.x + halfCam.x, max.x - halfCam.x);
+            float y = Mathf.Clamp(playerPos.y, min.y + halfCam.y, max.y - halfCam.y);
             targetPos = new Vector3(x, y, transform.position.z);
         }
 
@@ -76,7 +85,7 @@ public class CameraFollowRoom : MonoBehaviour
         }
         else
         {
-            var newPos = Vector3.SmoothDamp(transform.position, targetPos, ref _velocity, smoothTime, Mathf.Infinity, Time.deltaTime);
+            var newPos = Vector3.SmoothDamp(transform.position, targetPos, ref _velocity, smoothTime, maxFollowSpeed, Time.deltaTime);
 
             bool clampX = !fitsX && (Mathf.Approximately(targetPos.x, min.x + halfCam.x) || Mathf.Approximately(targetPos.x, max.x - halfCam.x));
             bool clampY = !fitsY && (Mathf.Approximately(targetPos.y, min.y + halfCam.y) || Mathf.Approximately(targetPos.y, max.y - halfCam.y));

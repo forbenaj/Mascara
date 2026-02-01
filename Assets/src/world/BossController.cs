@@ -15,7 +15,16 @@ public class BossController : MonoBehaviour
     public BossRoomController bossRoomController;
     public Rigidbody2D rb;
     public Collider2D hitCollider;
+    public Collider2D bodyCollider;
     public SpriteRenderer[] visuals;
+    public Animator animator;
+    [Header("Hands")]
+    public Transform rightHand;
+    public Transform leftHand;
+    public Collider2D rightHandHitbox;
+    public Collider2D leftHandHitbox;
+    [Header("Visual Masks (se caen por fase)")]
+    public SpriteRenderer[] masks; // ordenadas de izquierda a derecha o arriba a abajo
 
     [Header("Vida")]
     public int maxHealth = 100;
@@ -59,8 +68,21 @@ public class BossController : MonoBehaviour
         if (bossRoomController == null) bossRoomController = GetComponent<BossRoomController>();
         if (rb == null) rb = GetComponent<Rigidbody2D>();
         if (hitCollider == null) hitCollider = GetComponent<Collider2D>();
+        if (animator == null) animator = GetComponentInChildren<Animator>();
         currentHealth = maxHealth;
         onHealthChanged.Invoke(currentHealth, maxHealth);
+
+        // El boss no debe ser empujado por el player ni por la gravedad.
+        if (rb != null)
+        {
+            rb.bodyType = RigidbodyType2D.Kinematic;
+            rb.gravityScale = 0f;
+            // Permite colisionar sin ser empujado: inmóvil en física pero con collider sólido.
+            rb.constraints = RigidbodyConstraints2D.FreezeRotation | RigidbodyConstraints2D.FreezePosition;
+        }
+
+        if (bodyCollider == null) bodyCollider = hitCollider;
+        if (bodyCollider != null) bodyCollider.isTrigger = false; // bloquea al player
 
         // Auto-fill masks if not set
         if (playerMask == 0)
@@ -144,6 +166,15 @@ public class BossController : MonoBehaviour
         float chargeT = fast ? clawChargeTime * 0.6f : clawChargeTime;
         float cooldown = fast ? clawCooldown * 0.6f : clawCooldown;
 
+        TrySetTrigger("Claw");
+
+        var hand = PickHandForClaw();
+        if (hand.hit != null) hand.hit.enabled = false; // mientras trackea/carga no golpea
+        Vector3 handStart = hand.t != null ? hand.t.position : Vector3.zero;
+        // Asegura que la mano sea visible durante el tracking
+        var handRenderer = hand.t != null ? hand.t.GetComponentInChildren<SpriteRenderer>() : null;
+        if (handRenderer != null) handRenderer.enabled = true;
+
         // Track player
         Vector3 target = GetPlayerPos();
         float t = 0f;
@@ -151,6 +182,8 @@ public class BossController : MonoBehaviour
         {
             target = GetPlayerPos();
             DrawClawGizmo(target);
+            if (hand.t != null)
+                hand.t.position = target + Vector3.up * 6f; // mano persigue por arriba
             t += Time.deltaTime;
             yield return null;
         }
@@ -165,8 +198,12 @@ public class BossController : MonoBehaviour
         }
 
         // Slam down
-        DoClawHit(target);
+        DoClawHit(target, hand);
         yield return new WaitForSeconds(cooldown);
+
+        // Regresa la mano a su posición inicial
+        if (hand.t != null)
+            hand.t.position = handStart;
     }
 
     private void DrawClawGizmo(Vector3 target)
@@ -174,8 +211,19 @@ public class BossController : MonoBehaviour
         Debug.DrawLine(target + Vector3.up * 6f, target, Color.red, 0f);
     }
 
-    private void DoClawHit(Vector3 target)
+    private void DoClawHit(Vector3 target, (Transform t, Collider2D hit) hand)
     {
+        if (hand.t != null)
+        {
+            // coloca la mano arriba, luego baja y activa hitbox en el impacto
+            hand.t.position = target + Vector3.up * 6f;
+            if (hand.hit != null)
+            {
+                hand.hit.gameObject.SetActive(true);
+                hand.hit.enabled = true;
+            }
+            hand.t.position = target;
+        }
         Vector2 center = new Vector2(target.x, target.y + clawHitHeight * 0.5f);
         var size = new Vector2(clawHitWidth, clawHitHeight);
         var hits = Physics2D.OverlapBoxAll(center, size, 0f, playerMask);
@@ -206,11 +254,14 @@ public class BossController : MonoBehaviour
         if (movePoints == null || movePoints.Length == 0) yield break;
         float wait = fast ? moveWaitMin * 0.5f : Random.Range(moveWaitMin, moveWaitMax);
         Transform next = PickNextPoint();
+        animator?.SetBool("Moving", true);
         while (next != null && Vector2.Distance(transform.position, next.position) > 0.05f)
         {
             transform.position = Vector2.MoveTowards(transform.position, next.position, moveSpeed * Time.deltaTime);
+            FaceDirection(next.position.x - transform.position.x);
             yield return null;
         }
+        animator?.SetBool("Moving", false);
         yield return new WaitForSeconds(wait);
     }
 
@@ -302,8 +353,53 @@ public class BossController : MonoBehaviour
         if (newPhase != _phase)
         {
             _phase = newPhase;
+            UpdateMaskVisuals(_phase);
+            TrySetInt("Phase", (int)_phase);
             bossRoomController?.OnPhaseChanged((int)_phase);
         }
+    }
+
+    private void TrySetTrigger(string name)
+    {
+        if (animator == null) return;
+        if (AnimatorHasParam(name, AnimatorControllerParameterType.Trigger))
+        {
+            animator.ResetTrigger(name);
+            animator.SetTrigger(name);
+        }
+    }
+
+    private void TrySetInt(string name, int value)
+    {
+        if (animator == null) return;
+        if (AnimatorHasParam(name, AnimatorControllerParameterType.Int))
+        {
+            animator.SetInteger(name, value);
+        }
+    }
+
+    private bool AnimatorHasParam(string name, AnimatorControllerParameterType type)
+    {
+        if (animator == null) return false;
+        foreach (var p in animator.parameters)
+        {
+            if (p.name == name && p.type == type) return true;
+        }
+        return false;
+    }
+
+    private void UpdateMaskVisuals(Phase phase)
+    {
+        if (masks == null || masks.Length == 0) return;
+        // Fase 1: todas las máscaras visibles. Fase 2: cae 1. Fase 3: cae 2. Fase 4: caen todas.
+        int fallen = Mathf.Clamp((int)phase - 1, 0, masks.Length);
+        int active = Mathf.Max(0, masks.Length - fallen);
+        for (int i = 0; i < masks.Length; i++)
+        {
+            bool enable = i < active;
+            if (masks[i] != null) masks[i].enabled = enable;
+        }
+        Debug.Log($"Boss masks active {active}/{masks.Length} en fase {phase}");
     }
 
     private void OnCollisionEnter2D(Collision2D collision)
@@ -315,7 +411,7 @@ public class BossController : MonoBehaviour
         }
         if (collision.collider.CompareTag("Player"))
         {
-            // daño al jugador (lo maneja el sistema de player)
+            // bloquea al jugador; el daño lo maneja Player
         }
     }
 
@@ -328,7 +424,25 @@ public class BossController : MonoBehaviour
         }
         if (other.CompareTag("Player"))
         {
-            // daño al jugador
+            // daño al jugador (si se usa trigger en otra parte)
         }
+    }
+
+    private void FaceDirection(float dirX)
+    {
+        if (Mathf.Abs(dirX) < 0.01f) return;
+        var scale = transform.localScale;
+        scale.x = Mathf.Sign(dirX) * Mathf.Abs(scale.x);
+        transform.localScale = scale;
+    }
+
+    private (Transform t, Collider2D hit) PickHandForClaw()
+    {
+        bool facingRight = transform.localScale.x > 0f;
+        if (facingRight && rightHand != null) return (rightHand, rightHandHitbox);
+        if (!facingRight && leftHand != null) return (leftHand, leftHandHitbox);
+        if (rightHand != null) return (rightHand, rightHandHitbox);
+        if (leftHand != null) return (leftHand, leftHandHitbox);
+        return (null, null);
     }
 }

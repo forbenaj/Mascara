@@ -1,19 +1,13 @@
 fileFormatVersion: 2
-guid: 2d546546522faea0fb5eb5b9987fc070
+guid: 8f2a6486f30f550aba576e99c387e5ee
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: -5003789988938808630
-    second: plataformas_0
+      213: -3118523721526887329
+    second: Cuerpo_0002_0
   - first:
-      213: -6479089480501096285
-    second: plataformas_1
-  - first:
-      213: 359832435680915760
-    second: plataformas_2
-  - first:
-      213: 291714966209535500
-    second: plataformas_3
+      213: -143194262130887990
+    second: Cuerpo_0002_1
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -60,7 +54,7 @@ TextureImporter:
   spriteMeshType: 1
   alignment: 0
   spritePivot: {x: 0.5, y: 0.5}
-  spritePixelsToUnits: 512
+  spritePixelsToUnits: 100
   spriteBorder: {x: 0, y: 0, z: 0, w: 0}
   spriteGenerateFallbackPhysicsShape: 1
   alphaUsage: 1
@@ -109,89 +103,45 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: plataformas_0
+      name: Cuerpo_0002_0
       rect:
         serializedVersion: 2
-        x: 249
-        y: 1658
-        width: 1089
-        height: 229
+        x: 65
+        y: 136
+        width: 823
+        height: 544
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: ac285aa2487fe8ab0800000000000000
-      internalID: -5003789988938808630
+      spriteID: f5cb2caa237c8b4d0800000000000000
+      internalID: -3118523721526887329
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: plataformas_1
+      name: Cuerpo_0002_1
       rect:
         serializedVersion: 2
-        x: 99
-        y: 1177
-        width: 1231
-        height: 276
+        x: 901
+        y: 138
+        width: 59
+        height: 86
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 3a013c6f176a516a0800000000000000
-      internalID: -6479089480501096285
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: plataformas_2
-      rect:
-        serializedVersion: 2
-        x: 141
-        y: 671
-        width: 1127
-        height: 255
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: 031bc6b91b16ef400800000000000000
-      internalID: 359832435680915760
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: plataformas_3
-      rect:
-        serializedVersion: 2
-        x: 40
-        y: 50
-        width: 1369
-        height: 439
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: c0e959857316c0400800000000000000
-      internalID: 291714966209535500
+      spriteID: ac270d7c395430ef0800000000000000
+      internalID: -143194262130887990
       vertices: []
       indices: 
       edges: []
@@ -200,7 +150,7 @@ TextureImporter:
     customData: 
     physicsShape: []
     bones: []
-    spriteID: 9824e148c14c78eefac14b0b5b2285f9
+    spriteID: 
     internalID: 0
     vertices: []
     indices: 
@@ -208,14 +158,10 @@ TextureImporter:
     weights: []
     secondaryTextures: []
     spriteCustomMetadata:
-      entries:
-      - key: SpriteEditor.SliceSettings
-        value: '{"sliceOnImport":false,"gridCellCount":{"x":1.0,"y":1.0},"gridSpriteSize":{"x":64.0,"y":64.0},"gridSpriteOffset":{"x":0.0,"y":0.0},"gridSpritePadding":{"x":0.0,"y":0.0},"pivot":{"x":0.5,"y":0.5},"pivotPixels":{"x":0.0,"y":0.0},"autoSlicingMethod":0,"spriteAlignment":0,"pivotUnitMode":0,"slicingType":0,"keepEmptyRects":false,"isAlternate":false}'
+      entries: []
     nameFileIdTable:
-      plataformas_0: -5003789988938808630
-      plataformas_1: -6479089480501096285
-      plataformas_2: 359832435680915760
-      plataformas_3: 291714966209535500
+      Cuerpo_0002_0: -3118523721526887329
+      Cuerpo_0002_1: -143194262130887990
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

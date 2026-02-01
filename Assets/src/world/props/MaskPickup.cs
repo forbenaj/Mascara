@@ -400,7 +400,7 @@ public class MaskPickup : MonoBehaviour
         for (int i = 0; i < _maskColliders.Length; i++)
         {
             var col = _maskColliders[i];
-            if (col == null || !col.enabled) continue;
+            if (col == null || !col.enabled || col.isTrigger) continue;
             var distance = col.Distance(_playerCollider);
             if (distance.distance < minDistance)
             {

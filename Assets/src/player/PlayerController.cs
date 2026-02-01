@@ -48,6 +48,7 @@ public class PlayerController : MonoBehaviour
     private bool facingLeft;
     private int jumpState;
     private Vector3 attackPointLocal;
+    private Vector3 baseScale;
     private static readonly int AnimIsMoving = Animator.StringToHash("IsMoving");
     private static readonly int AnimIsGrounded = Animator.StringToHash("IsGrounded");
     private static readonly int AnimJumpState = Animator.StringToHash("JumpState");
@@ -71,6 +72,8 @@ public class PlayerController : MonoBehaviour
 
         if (attackPoint != null)
             attackPointLocal = attackPoint.localPosition;
+
+        baseScale = transform.localScale;
     }
 
     private void OnEnable()
@@ -243,7 +246,11 @@ public class PlayerController : MonoBehaviour
             facingLeft = true;
 
         if (spriteRenderer != null)
-            spriteRenderer.flipX = facingLeft;
+            spriteRenderer.flipX = false;
+
+        var scale = baseScale;
+        scale.x = Mathf.Abs(scale.x) * (facingLeft ? -1f : 1f);
+        transform.localScale = scale;
 
         if (attackPoint != null)
         {

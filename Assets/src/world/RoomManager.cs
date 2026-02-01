@@ -82,6 +82,7 @@ public class RoomManager : MonoBehaviour
             cam.SnapToRoom(room, player);
 
         _current.OnEnter();
+
     }
 
     public Room GetRoomById(string id) => rooms.FirstOrDefault(r => r.roomId == id);

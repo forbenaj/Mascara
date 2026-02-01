@@ -204,7 +204,7 @@ AnimatorStateTransition:
     m_ConditionEvent: Attack
     m_EventTreshold: 0
   m_DstStateMachine: {fileID: 0}
-  m_DstState: {fileID: 2307882327885598083}
+  m_DstState: {fileID: 8824787399337905887}
   m_Solo: 0
   m_Mute: 0
   m_IsExit: 0
@@ -217,7 +217,7 @@ AnimatorStateTransition:
   m_InterruptionSource: 0
   m_OrderedInterruption: 1
   m_CanTransitionToSelf: 1
---- !u!1101 &-907384241505106915
+--- !u!1101 &-5797925152147000148
 AnimatorStateTransition:
   m_ObjectHideFlags: 1
   m_CorrespondingSourceObject: {fileID: 0}
@@ -225,11 +225,11 @@ AnimatorStateTransition:
   m_PrefabAsset: {fileID: 0}
   m_Name: 
   m_Conditions:
-  - m_ConditionMode: 1
+  - m_ConditionMode: 2
     m_ConditionEvent: IsMoving
     m_EventTreshold: 0
   m_DstStateMachine: {fileID: 0}
-  m_DstState: {fileID: -4524192833587404420}
+  m_DstState: {fileID: -4847117126674016108}
   m_Solo: 0
   m_Mute: 0
   m_IsExit: 0
@@ -306,7 +306,7 @@ AnimatorController:
   m_AnimatorLayers:
   - serializedVersion: 5
     m_Name: Base Layer
-    m_StateMachine: {fileID: 7997008485503711531}
+    m_StateMachine: {fileID: -3739704627084743184}
     m_Mask: {fileID: 0}
     m_Motions: []
     m_Behaviours: []
@@ -408,7 +408,7 @@ AnimatorState:
   m_Speed: 1
   m_CycleOffset: 0
   m_Transitions:
-  - {fileID: -3683639626100727782}
+  - {fileID: -3809301634540243522}
   m_StateMachineBehaviours: []
   m_Position: {x: 50, y: 50, z: 0}
   m_IKOnFeet: 0

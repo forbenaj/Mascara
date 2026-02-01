@@ -116,8 +116,10 @@ public static class ObstaclePrefabFixer
         surface.localScale = Vector3.one;
         var col = surface.gameObject.AddComponent<BoxCollider2D>();
         col.size = new Vector2(body.size.x, thickness);
-        int groundLayer = LayerMask.NameToLayer("Ground");
-        if (groundLayer >= 0) surface.gameObject.layer = groundLayer;
+        // Preferimos capa dedicada para superficies; si no existe, usamos Ground.
+        int surfLayer = LayerMask.NameToLayer("PlatformSurface");
+        if (surfLayer == -1) surfLayer = LayerMask.NameToLayer("Ground");
+        if (surfLayer >= 0) surface.gameObject.layer = surfLayer;
         return surface;
     }
 

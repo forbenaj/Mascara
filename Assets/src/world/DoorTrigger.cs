@@ -20,12 +20,7 @@ public class DoorTrigger : MonoBehaviour
         if (_door.IsLocked) return;
         if (!other.CompareTag(playerTag)) return;
 
-        // Prefer new API; fallback to older Unity versions.
-#if UNITY_2022_2_OR_NEWER
-        var manager = Object.FindFirstObjectByType<RoomManager>();
-#else
-        var manager = Object.FindObjectOfType<RoomManager>();
-#endif
+        var manager = FindManager();
         var destRoom = manager?.GetRoomById(_door.targetRoomId);
         if (manager == null || destRoom == null)
         {
@@ -34,5 +29,14 @@ public class DoorTrigger : MonoBehaviour
         }
 
         manager.SetCurrentRoom(destRoom, _door.targetSpawnOffset, other.transform);
+    }
+
+    private RoomManager FindManager()
+    {
+#if UNITY_2022_2_OR_NEWER
+        return Object.FindFirstObjectByType<RoomManager>();
+#else
+        return Object.FindObjectOfType<RoomManager>();
+#endif
     }
 }

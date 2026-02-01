@@ -4,6 +4,8 @@ public class MeepSpawner : MonoBehaviour
 {
     [Tooltip("Prefab del meep.")]
     public Meep meepPrefab;
+    [Tooltip("Lista de prefabs posibles; se elige uno al azar.")]
+    public Meep[] meepPrefabs;
 
     [Tooltip("Segundos entre spawns.")]
     public float interval = 2.5f;
@@ -35,9 +37,10 @@ public class MeepSpawner : MonoBehaviour
 
     public void SpawnOne()
     {
-        if (meepPrefab == null) return;
+        var prefab = PickPrefab();
+        if (prefab == null) return;
         var parent = meepParent != null ? meepParent : transform;
-        var meep = Instantiate(meepPrefab, transform.position, Quaternion.identity, parent);
+        var meep = Instantiate(prefab, transform.position, Quaternion.identity, parent);
         if (hitsBaseOverride > 0)
             meep.baseHitsToKill = hitsBaseOverride;
     }
@@ -51,5 +54,15 @@ public class MeepSpawner : MonoBehaviour
             if (child != null) count++;
         }
         return count;
+    }
+
+    private Meep PickPrefab()
+    {
+        if (meepPrefabs != null && meepPrefabs.Length > 0)
+        {
+            return meepPrefabs[Random.Range(0, meepPrefabs.Length)];
+        }
+
+        return meepPrefab;
     }
 }

@@ -45,6 +45,7 @@ public class PlayerController : MonoBehaviour
     private bool isGrounded;
     private bool wasGrounded;
     private bool isAttacking;
+    [HideInInspector] public bool controlsLocked;
     private bool facingLeft;
     private int jumpState;
     private Vector3 attackPointLocal;
@@ -122,6 +123,13 @@ public class PlayerController : MonoBehaviour
         UpdateJumpState();
         HandleLandingSound();
 
+        if (controlsLocked)
+        {
+            rb.linearVelocity = new Vector2(0f, rb.linearVelocity.y);
+            UpdateAnimator(0f);
+            return;
+        }
+
         float moveX = 0f;
         if (moveAction != null)
         {
@@ -173,7 +181,7 @@ public class PlayerController : MonoBehaviour
 
     private void OnJump(InputAction.CallbackContext context)
     {
-        if (!isGrounded)
+        if (controlsLocked || !isGrounded)
         {
             return;
         }
@@ -185,7 +193,7 @@ public class PlayerController : MonoBehaviour
 
     private void OnAttack(InputAction.CallbackContext context)
     {
-        if (isAttacking)
+        if (controlsLocked || isAttacking)
         {
             return;
         }

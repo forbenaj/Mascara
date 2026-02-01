@@ -155,6 +155,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4525493771423968477}
   - component: {fileID: 183218457422834609}
+  - component: {fileID: 3966616532306901535}
   m_Layer: 0
   m_Name: RoomSpawn
   m_TagString: Untagged
@@ -198,6 +199,26 @@ MonoBehaviour:
   wallLayerName: Wall
   obstaclesRoot: {fileID: 0}
   lockDoorsOnEnter: 0
+--- !u!114 &3966616532306901535
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1510401294588215997}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 43e18e76dc2e787d7b67c22247497c82, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::DialogueTrigger
+  lines:
+  - "Majema alguna vez tuvo rostro. Cuando una emoci\xF3n no encuentra salida\u2026
+    se endurece. "
+  - "La ira, la culpa, el miedo\u2026 toman forma.\nY nacen las m\xE1scaras."
+  - "Las m\xE1scaras les dieron poder... Y les robaron lo que eran.\nCarga con su
+    identidad."
+  playOnStart: 1
+  controller: {fileID: 0}
 --- !u!1 &1988177925433689209
 GameObject:
   m_ObjectHideFlags: 0

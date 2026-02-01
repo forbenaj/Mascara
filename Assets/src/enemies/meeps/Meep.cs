@@ -58,6 +58,7 @@ public class Meep : MonoBehaviour
     private bool _maskAttached;
     private bool _isGrounded;
     private float _baseGravity;
+    private Vector3 _baseScale;
     private static readonly int AnimIsMoving = Animator.StringToHash("IsMoving");
     private static readonly int AnimDie = Animator.StringToHash("Die");
 
@@ -73,6 +74,7 @@ public class Meep : MonoBehaviour
     {
         _rb = GetComponent<Rigidbody2D>();
         _col = GetComponent<Collider2D>();
+        _baseScale = transform.localScale;
         if (spriteRenderer != null)
         {
             _sr = spriteRenderer;
@@ -200,7 +202,9 @@ public class Meep : MonoBehaviour
             if (hit.collider != null)
             {
                 _dir *= -1;
-                if (_sr) _sr.flipX = _dir < 0;
+                var scale = _baseScale;
+                scale.x = Mathf.Abs(scale.x) * _dir;
+                transform.localScale = scale;
             }
         }
 

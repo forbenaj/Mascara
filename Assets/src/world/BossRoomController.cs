@@ -12,7 +12,12 @@ public class BossRoomController : MonoBehaviour
     [Header("Audio")]
     public AudioSource audioSource;
     public AudioClip appearClip;
+    [Range(0f, 3f)] public float appearVolume = 1.2f;
+    [Tooltip("Prioridad baja = más importante. 0 = más alto, 256 = más bajo.")]
+    public int appearPriority = 16;
     private bool _playedAppear;
+    [Tooltip("Si true, además de PlayOneShot se dispara un PlayClipAtPoint en la posición de la cámara.")]
+    public bool fallbackAtCamera = true;
 
     private void Awake()
     {
@@ -29,6 +34,7 @@ public class BossRoomController : MonoBehaviour
             audioSource.playOnAwake = false;
             audioSource.loop = false;
             audioSource.spatialBlend = 0f; // 2D para que siempre se escuche
+            audioSource.priority = appearPriority;
         }
     }
 
@@ -65,9 +71,23 @@ public class BossRoomController : MonoBehaviour
     private void TryPlayAppear()
     {
         if (_playedAppear) return;
-        if (audioSource == null || appearClip == null) return;
-        if (!gameObject.activeInHierarchy) return;
-        audioSource.PlayOneShot(appearClip);
+        if (audioSource == null || appearClip == null)
+        {
+            Debug.LogWarning($"BossRoomController: faltan audioSource o appearClip en {name}");
+            return;
+        }
+        if (!gameObject.activeInHierarchy)
+        {
+            Debug.LogWarning($"BossRoomController: {name} no está activo en jerarquía, no reproduce SFX.");
+            return;
+        }
+        Debug.Log($"BossRoomController: reproduce appearClip {appearClip.name} en {name}");
+        audioSource.priority = appearPriority;
+        audioSource.PlayOneShot(appearClip, appearVolume);
+        if (fallbackAtCamera && Camera.main != null)
+        {
+            AudioSource.PlayClipAtPoint(appearClip, Camera.main.transform.position, appearVolume);
+        }
         _playedAppear = true;
     }
 }

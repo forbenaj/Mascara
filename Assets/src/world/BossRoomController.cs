@@ -40,8 +40,14 @@ public class BossRoomController : MonoBehaviour
 
     public void OnPhaseChanged(int phase)
     {
-        if (ambientLayers == null) return;
-        ambientLayers.EnableLayer($"phase{phase}");
+        if (ambientLayers != null)
+            ambientLayers.EnableLayer($"phase{phase}");
+
+        if (MusicManager.Instance != null)
+        {
+            Debug.Log($"[BossRoom] Phase changed -> {phase}, sending to MusicManager");
+            MusicManager.Instance.EnableMaskLayer(phase);
+        }
     }
 
     // Llamar cuando termine la pelea (win/lose) para abrir puertas.

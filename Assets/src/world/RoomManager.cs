@@ -83,6 +83,12 @@ public class RoomManager : MonoBehaviour
 
         _current.OnEnter();
 
+        var bossCtrl = room.GetComponent<BossRoomController>();
+        if (bossCtrl != null && MusicManager.Instance != null)
+        {
+            MusicManager.Instance.StartBossLoop();
+        }
+
     }
 
     public Room GetRoomById(string id) => rooms.FirstOrDefault(r => r.roomId == id);

@@ -40,6 +40,9 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private AudioSource audioSource;
     [SerializeField] private AudioClip jumpClip;
     [SerializeField] private AudioClip landClip;
+    [SerializeField, Range(0f, 2f)] private float attackVolume = 0.8f;
+    [SerializeField, Range(0f, 2f)] private float jumpVolume = 1f;
+    [SerializeField, Range(0f, 2f)] private float landVolume = 0.5f;
 
     private Rigidbody2D rb;
     private bool isGrounded;
@@ -174,7 +177,7 @@ public class PlayerController : MonoBehaviour
     {
         if (!wasGrounded && isGrounded && landClip != null && audioSource != null)
         {
-            audioSource.PlayOneShot(landClip);
+            audioSource.PlayOneShot(landClip, landVolume);
         }
         wasGrounded = isGrounded;
     }
@@ -188,7 +191,7 @@ public class PlayerController : MonoBehaviour
 
         rb.linearVelocity = new Vector2(rb.linearVelocity.x, jumpForce);
         if (audioSource != null && jumpClip != null)
-            audioSource.PlayOneShot(jumpClip);
+            audioSource.PlayOneShot(jumpClip, jumpVolume);
     }
 
     private void OnAttack(InputAction.CallbackContext context)
@@ -217,7 +220,7 @@ public class PlayerController : MonoBehaviour
     {
         if (audioSource == null || attackClips == null || attackClips.Length == 0) return;
         var clip = attackClips[Random.Range(0, attackClips.Length)];
-        if (clip != null) audioSource.PlayOneShot(clip);
+        if (clip != null) audioSource.PlayOneShot(clip, attackVolume);
     }
 
     private void DoAttackHit()

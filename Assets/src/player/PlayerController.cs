@@ -91,6 +91,19 @@ public class PlayerController : MonoBehaviour
             attackPointLocal = attackPoint.localPosition;
 
         baseScale = transform.localScale;
+
+        // Asegura que podamos golpear al boss aunque el layer mask no esté seteado en el inspector.
+        // Asegura que siempre incluyamos la capa Boss en los golpes.
+        int bossMask = LayerMask.GetMask("Boss");
+        if (attackLayers.value == 0)
+        {
+            int mask = LayerMask.GetMask("Boss", "Enemy");
+            attackLayers = mask != 0 ? mask : ~0; // si no existen esas capas, usa todas
+        }
+        else if (bossMask != 0 && (attackLayers.value & bossMask) == 0)
+        {
+            attackLayers |= bossMask;
+        }
     }
 
     private void OnEnable()

@@ -41,5 +41,14 @@ TagManager:
   - name: Default
     uniqueID: 0
     locked: 0
+  - name: Boss
+    uniqueID: 442865977
+    locked: 0
+  - name: Mask
+    uniqueID: 3183013197
+    locked: 0
+  - name: Hand
+    uniqueID: 677877299
+    locked: 0
   m_RenderingLayers:
   - Default

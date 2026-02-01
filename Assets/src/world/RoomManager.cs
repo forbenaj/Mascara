@@ -83,10 +83,6 @@ public class RoomManager : MonoBehaviour
 
         _current.OnEnter();
 
-        // If room has a BossRoomController, trigger intro SFX.
-        var bossCtrl = room.GetComponent<BossRoomController>();
-        if (bossCtrl != null)
-            bossCtrl.PlayAppear();
     }
 
     public Room GetRoomById(string id) => rooms.FirstOrDefault(r => r.roomId == id);

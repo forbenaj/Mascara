@@ -51,43 +51,6 @@ public class BossRoomController : MonoBehaviour
             room.MarkCleared();
     }
 
-    // Called externally (e.g., when room se vuelve activo) to play the intro SFX once.
-    public void PlayAppear()
-    {
-        TryPlayAppear();
-    }
-
-    private void OnEnable()
-    {
-        TryPlayAppear();
-    }
-
-    private void Start()
-    {
-        // En caso de que OnEnable ocurra antes de asignar el clip en prefab instanciado.
-        TryPlayAppear();
-    }
-
-    private void TryPlayAppear()
-    {
-        if (_playedAppear) return;
-        if (audioSource == null || appearClip == null)
-        {
-            Debug.LogWarning($"BossRoomController: faltan audioSource o appearClip en {name}");
-            return;
-        }
-        if (!gameObject.activeInHierarchy)
-        {
-            Debug.LogWarning($"BossRoomController: {name} no está activo en jerarquía, no reproduce SFX.");
-            return;
-        }
-        Debug.Log($"BossRoomController: reproduce appearClip {appearClip.name} en {name}");
-        audioSource.priority = appearPriority;
-        audioSource.PlayOneShot(appearClip, appearVolume);
-        if (fallbackAtCamera && Camera.main != null)
-        {
-            AudioSource.PlayClipAtPoint(appearClip, Camera.main.transform.position, appearVolume);
-        }
-        _playedAppear = true;
-    }
+    // Audio de aparición deshabilitado; interfaz vacía por compatibilidad.
+    public void PlayAppear() { }
 }

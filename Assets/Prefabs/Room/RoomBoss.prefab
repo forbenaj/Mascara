@@ -2101,6 +2101,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::DoorTrigger
   playerTag: Player
+  enterClip: {fileID: 8300000, guid: 488322afaffff8053aacbca3b55d118f, type: 3}
+  playAtDoorPosition: 1
 --- !u!1 &7290784741121994137
 GameObject:
   m_ObjectHideFlags: 0

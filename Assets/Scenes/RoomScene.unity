@@ -596,6 +596,7 @@ MonoBehaviour:
   size: {x: 20, y: 15}
   wallThickness: 0.5
   roomId: Spawn
+  wallLayerName: Wall
   obstaclesRoot: {fileID: 0}
   lockDoorsOnEnter: 0
 --- !u!4 &1319014358
@@ -615,9 +616,9 @@ Transform:
   - {fileID: 194983349}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!4 &1541520998 stripped
+--- !u!4 &1447017556 stripped
 Transform:
-  m_CorrespondingSourceObject: {fileID: 1205306597000008293, guid: 167058833b6acab15b0d6e63fb602918, type: 3}
+  m_CorrespondingSourceObject: {fileID: 9145019376742470371, guid: 167058833b6acab15b0d6e63fb602918, type: 3}
   m_PrefabInstance: {fileID: 1721122389}
   m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1721122389
@@ -1079,7 +1080,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ef76fa8dd59b92fbd82f4a24ed36aebf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CameraFollow
-  target: {fileID: 1541520998}
+  target: {fileID: 1447017556}
   offset: {x: 0, y: 2.5, z: -10}
   followSpeed: 6
 --- !u!1 &2103920897

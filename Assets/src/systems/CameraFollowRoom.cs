@@ -61,21 +61,13 @@ public class CameraFollowRoom : MonoBehaviour
         var min = roomPos - (Vector3)halfRoom;
         var max = roomPos + (Vector3)halfRoom;
 
-        Vector3 targetPos;
         bool fitsX = scaledSize.x <= halfCam.x * 2f;
         bool fitsY = scaledSize.y <= halfCam.y * 2f;
 
-        if (fitsX && fitsY)
-        {
-            targetPos = new Vector3(roomPos.x, roomPos.y, transform.position.z);
-        }
-        else
-        {
-            Vector3 playerPos = _playerRb ? (Vector3)_playerRb.position : _player.position;
-            float x = Mathf.Clamp(playerPos.x, min.x + halfCam.x, max.x - halfCam.x);
-            float y = Mathf.Clamp(playerPos.y, min.y + halfCam.y, max.y - halfCam.y);
-            targetPos = new Vector3(x, y, transform.position.z);
-        }
+        Vector3 playerPos = _playerRb ? (Vector3)_playerRb.position : _player.position;
+        float x = fitsX ? roomPos.x : Mathf.Clamp(playerPos.x, min.x + halfCam.x, max.x - halfCam.x);
+        float y = fitsY ? roomPos.y : Mathf.Clamp(playerPos.y, min.y + halfCam.y, max.y - halfCam.y);
+        Vector3 targetPos = new Vector3(x, y, transform.position.z);
 
         if (roomChanged)
         {

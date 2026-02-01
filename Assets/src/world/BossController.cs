@@ -1,5 +1,6 @@
 using System.Collections;
 using UnityEngine;
+using UnityEngine.Events;
 
 [DisallowMultipleComponent]
 public class BossController : MonoBehaviour
@@ -50,6 +51,7 @@ public class BossController : MonoBehaviour
     private Transform _player;
     private Coroutine _loop;
     private bool _flashing;
+    [HideInInspector] public UnityEvent<int, int> onHealthChanged = new UnityEvent<int, int>(); // current, max
 
     private void Awake()
     {
@@ -58,6 +60,7 @@ public class BossController : MonoBehaviour
         if (rb == null) rb = GetComponent<Rigidbody2D>();
         if (hitCollider == null) hitCollider = GetComponent<Collider2D>();
         currentHealth = maxHealth;
+        onHealthChanged.Invoke(currentHealth, maxHealth);
 
         // Auto-fill masks if not set
         if (playerMask == 0)
@@ -67,8 +70,24 @@ public class BossController : MonoBehaviour
         }
         if (obstacleIgnoreMask == 0)
         {
-            int mask = LayerMask.GetMask("Obstacle", "PlatformSurface");
-            obstacleIgnoreMask = mask;
+            int mask = LayerMask.GetMask("Obstacle", "PlatformSurface", "Default");
+            obstacleIgnoreMask = mask != 0 ? mask : -1;
+        }
+
+        // Ignore collisions with obstacle layers proactively
+        var allCols = GetComponentsInChildren<Collider2D>();
+        int ignoreMask = obstacleIgnoreMask.value;
+        if (ignoreMask != 0)
+        {
+            var colliders = FindObjectsOfType<Collider2D>();
+            foreach (var c in colliders)
+            {
+                if (((1 << c.gameObject.layer) & ignoreMask) != 0)
+                {
+                    foreach (var myCol in allCols)
+                        Physics2D.IgnoreCollision(myCol, c, true);
+                }
+            }
         }
     }
 
@@ -228,6 +247,7 @@ public class BossController : MonoBehaviour
     {
         _running = false;
         if (_loop != null) StopCoroutine(_loop);
+        onHealthChanged.Invoke(0, maxHealth);
         bossRoomController?.EndFight();
     }
 
@@ -236,6 +256,7 @@ public class BossController : MonoBehaviour
         if (amount <= 0 || !_running) return;
         currentHealth = Mathf.Max(0, currentHealth - amount);
         FlashHit();
+        onHealthChanged.Invoke(currentHealth, maxHealth);
         UpdatePhaseByHealth();
         if (currentHealth <= 0)
         {

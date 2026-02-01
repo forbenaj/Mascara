@@ -1,67 +1,60 @@
 using UnityEngine;
 
-/// Attach to a child object (e.g., GroundCheck) with a trigger collider to detect ground without using the main collider.
+/// Attach to a child object (e.g., GroundCheck) with a BoxCollider2D trigger to detect ground reliably.
 [DisallowMultipleComponent]
-[RequireComponent(typeof(Collider2D))]
+[RequireComponent(typeof(BoxCollider2D))]
 public class GroundCheck : MonoBehaviour
 {
     [Tooltip("Layers considered ground.")]
-    public LayerMask groundMask;
+    public LayerMask groundMask = -1; // all layers by default; set to Ground in inspector
 
     [Tooltip("Seconds to buffer grounded after leaving ground (coyote time).")]
     public float coyoteTime = 0.05f;
 
+    [Tooltip("Small downward offset to catch tiny separations.")]
+    public float skinDepth = 0.02f;
+
     public bool IsGrounded => _timer > 0f;
 
     private float _timer;
-    
-    private Collider2D _col;
+    private BoxCollider2D _col;
 
     private void Awake()
     {
-        _col = GetComponent<Collider2D>();
+        _col = GetComponent<BoxCollider2D>();
         _col.isTrigger = true;
     }
 
-    private void Update()
+    private void FixedUpdate()
     {
-        if (_timer > 0f) _timer -= Time.deltaTime;
+        CheckGround();
+        if (_timer > 0f) _timer -= Time.fixedDeltaTime;
     }
 
-    private void OnTriggerStay2D(Collider2D other)
+    private void CheckGround()
     {
-        if (IsGround(other.gameObject.layer))
+        Vector2 size = Vector2.Scale(_col.size, transform.lossyScale);
+        Vector2 center = (Vector2)transform.TransformPoint(_col.offset) + Vector2.down * skinDepth;
+        float angle = transform.eulerAngles.z;
+
+        var hits = Physics2D.OverlapBoxAll(center, size, angle, groundMask);
+        for (int i = 0; i < hits.Length; i++)
         {
+            var h = hits[i];
+            if (h == null) continue;
+            if (h.attachedRigidbody == _col.attachedRigidbody) continue; // ignore self
             _timer = coyoteTime;
+            return;
         }
-    }
-
-    private void OnTriggerEnter2D(Collider2D other)
-    {
-        if (IsGround(other.gameObject.layer))
-        {
-            _timer = coyoteTime;
-        }
-    }
-
-    private void OnTriggerExit2D(Collider2D other)
-    {
-        // timer will tick down; no immediate false to allow coyote time
-    }
-
-    private bool IsGround(int layer)
-    {
-        return (groundMask.value & (1 << layer)) != 0;
     }
 
     private void OnDrawGizmos()
     {
+        var col = GetComponent<BoxCollider2D>();
+        if (col == null) return;
         Gizmos.color = IsGrounded ? Color.green : Color.red;
-        var col = GetComponent<Collider2D>() as BoxCollider2D;
-        if (col != null)
-        {
-            Gizmos.matrix = transform.localToWorldMatrix;
-            Gizmos.DrawWireCube(col.offset, col.size);
-        }
+        Gizmos.matrix = transform.localToWorldMatrix;
+        Gizmos.DrawWireCube(col.offset + Vector2.down * skinDepth, col.size);
+        Gizmos.matrix = Matrix4x4.identity;
     }
 }

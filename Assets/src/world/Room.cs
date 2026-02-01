@@ -16,6 +16,10 @@ public class Room : MonoBehaviour
     [Tooltip("Optional unique id used by RoomManager / doors.")]
     public string roomId = "Room";
 
+    [Header("Layers")]
+    [Tooltip("Layer que usarán los bordes (N,E,W); la pared South usa Ground.")]
+    public string wallLayerName = "Wall";
+
     [Header("References")]
     [Tooltip("Parent for obstacles placed in editor (purely organizational).")]
     public Transform obstaclesRoot;
@@ -116,7 +120,7 @@ public class Room : MonoBehaviour
         if (wall == null)
         {
             var go = new GameObject(name);
-            go.layer = gameObject.layer;
+            go.layer = ResolveWallLayer(name);
             wall = go.transform;
             wall.SetParent(parent);
             wall.localRotation = Quaternion.identity;
@@ -129,6 +133,23 @@ public class Room : MonoBehaviour
         box.size = size2D;
         box.offset = Vector2.zero;
         box.isTrigger = false;
+    }
+
+    private int ResolveWallLayer(string wallName)
+    {
+        if (wallName == "South")
+        {
+            int ground = LayerMask.NameToLayer("Ground");
+            if (ground != -1) return ground;
+        }
+
+        if (!string.IsNullOrEmpty(wallLayerName))
+        {
+            int wall = LayerMask.NameToLayer(wallLayerName);
+            if (wall != -1) return wall;
+        }
+
+        return gameObject.layer;
     }
 
     private void OnDrawGizmos()

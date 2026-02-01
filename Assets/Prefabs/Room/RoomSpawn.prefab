@@ -195,6 +195,7 @@ MonoBehaviour:
   size: {x: 25, y: 10}
   wallThickness: 0.5
   roomId: Spawn
+  wallLayerName: Wall
   obstaclesRoot: {fileID: 0}
   lockDoorsOnEnter: 0
 --- !u!1 &1988177925433689209
@@ -207,7 +208,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8575723535599809461}
   - component: {fileID: 4017176981812291564}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: West
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -285,7 +286,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8933649769665954331}
   - component: {fileID: 6077046781753604976}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: East
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -485,7 +486,7 @@ GameObject:
   m_Component:
   - component: {fileID: 9093100418298319026}
   - component: {fileID: 8533626073093656221}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: North
   m_TagString: Untagged
   m_Icon: {fileID: 0}

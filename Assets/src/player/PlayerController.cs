@@ -44,6 +44,7 @@ public class PlayerController : MonoBehaviour
     private void Awake()
     {
         rb = GetComponent<Rigidbody2D>();
+        rb.interpolation = RigidbodyInterpolation2D.Interpolate;
         if (animator == null)
             animator = GetComponentInChildren<Animator>();
         if (spriteRenderer == null)

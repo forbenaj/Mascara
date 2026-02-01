@@ -13,6 +13,8 @@ public class DialogueController : MonoBehaviour
     [Tooltip("Alternativa con TMP_Text; si está asignado, se usa en lugar de dialogueText.")]
     public TMPro.TMP_Text dialogueTMP;
 #endif
+    [Tooltip("Opcional: límite de caracteres por línea para evitar que se salga del panel.")]
+    public int maxCharsPerLine = 60;
     [Tooltip("Referencia al player para bloquear controles.")]
     public PlayerController player;
 
@@ -33,10 +35,8 @@ public class DialogueController : MonoBehaviour
     private void Update()
     {
         if (!_active) return;
-        if (Input.GetKeyDown(advanceKey))
-        {
+        if (AdvancePressed())
             ShowNext();
-        }
     }
 
     public void StartDialogue(IEnumerable<string> lines)
@@ -61,11 +61,41 @@ public class DialogueController : MonoBehaviour
         }
 
         var line = _lines.Dequeue();
+        line = WrapLine(line);
         if (dialogueText != null)
             dialogueText.text = line;
 #if TMP_PRESENT
         if (dialogueTMP != null)
             dialogueTMP.text = line;
+#endif
+    }
+
+    private string WrapLine(string line)
+    {
+        if (maxCharsPerLine <= 0) return line;
+        var words = line.Split(' ');
+        var result = "";
+        var current = "";
+        foreach (var w in words)
+        {
+            if (current.Length + w.Length + 1 > maxCharsPerLine)
+            {
+                result += current.TrimEnd() + "\n";
+                current = "";
+            }
+            current += w + " ";
+        }
+        result += current.TrimEnd();
+        return result;
+    }
+
+    private bool AdvancePressed()
+    {
+#if ENABLE_INPUT_SYSTEM && !ENABLE_LEGACY_INPUT_MANAGER
+        var keyboard = UnityEngine.InputSystem.Keyboard.current;
+        return keyboard != null && keyboard.enterKey.wasPressedThisFrame;
+#else
+        return Input.GetKeyDown(advanceKey);
 #endif
     }
 

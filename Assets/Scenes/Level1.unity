@@ -119,11 +119,6 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
---- !u!1 &185831909 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 1510401294588215997, guid: 0ef109dd51803a00c90d4cb90c458194, type: 3}
-  m_PrefabInstance: {fileID: 3801691383499747614}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &245840756
 GameObject:
   m_ObjectHideFlags: 0
@@ -151,15 +146,16 @@ RectTransform:
   m_GameObject: {fileID: 245840756}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 1, y: 0.30751023, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
+  - {fileID: 1399289931}
   - {fileID: 714829134}
   m_Father: {fileID: 1980819775}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: 127}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &245840758
@@ -175,7 +171,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Image
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 0.392}
+  m_Color: {r: 1, g: 1, b: 1, a: 0.02745098}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -321,7 +317,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Text
   m_Material: {fileID: 0}
-  m_Color: {r: 0.19607843, g: 0.19607843, b: 0.19607843, a: 1}
+  m_Color: {r: 0, g: 0, b: 0, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -329,13 +325,13 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   m_FontData:
-    m_Font: {fileID: 10102, guid: 0000000000000000e000000000000000, type: 0}
+    m_Font: {fileID: 12800000, guid: 61877a9c8e272291d8dded6e3f3dcfa3, type: 3}
     m_FontSize: 5
     m_FontStyle: 0
     m_BestFit: 1
     m_MinSize: 5
     m_MaxSize: 24
-    m_Alignment: 0
+    m_Alignment: 1
     m_AlignByGeometry: 0
     m_RichText: 1
     m_HorizontalOverflow: 0
@@ -357,42 +353,23 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 714829131}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 1, y: 3.3332224, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 245840757}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMin: {x: 0, y: 0.32636845}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 20, y: -20}
-  m_SizeDelta: {x: -40, y: -770}
+  m_AnchoredPosition: {x: 20, y: -19.680431}
+  m_SizeDelta: {x: -40, y: -191}
   m_Pivot: {x: 0, y: 1}
 --- !u!4 &808792724 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4525493771423968477, guid: 0ef109dd51803a00c90d4cb90c458194, type: 3}
   m_PrefabInstance: {fileID: 3801691383499747614}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &808792726
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 185831909}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 43e18e76dc2e787d7b67c22247497c82, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::DialogueTrigger
-  lines:
-  - "Majema alguna vez tuvo rostro. Cuando una emoci\xF3n no encuentra salida\u2026
-    se endurece. \nLa ira, la culpa, el miedo\u2026 toman forma.\nY nacen las m\xE1scaras."
-  - "Las m\xE1scaras les dieron poder... Y les robaron lo que eran.\nCarga con su
-    identidad."
-  playOnStart: 1
-  controller: {fileID: 1980819771}
 --- !u!1001 &895138056
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -918,6 +895,85 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1399289930
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1399289931}
+  - component: {fileID: 1399289933}
+  - component: {fileID: 1399289932}
+  m_Layer: 5
+  m_Name: EnterText
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &1399289931
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1399289930}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 245840757}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 1, y: 1}
+  m_AnchoredPosition: {x: 237, y: -248}
+  m_SizeDelta: {x: -476, y: -256}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &1399289932
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1399289930}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5f7201a12d95ffc409449d95f23cf332, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Text
+  m_Material: {fileID: 0}
+  m_Color: {r: 0, g: 0, b: 0, a: 1}
+  m_RaycastTarget: 1
+  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
+  m_Maskable: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+  m_FontData:
+    m_Font: {fileID: 12800000, guid: 61877a9c8e272291d8dded6e3f3dcfa3, type: 3}
+    m_FontSize: 5
+    m_FontStyle: 0
+    m_BestFit: 1
+    m_MinSize: 0
+    m_MaxSize: 40
+    m_Alignment: 4
+    m_AlignByGeometry: 0
+    m_RichText: 1
+    m_HorizontalOverflow: 0
+    m_VerticalOverflow: 1
+    m_LineSpacing: 1
+  m_Text: "Enter \u25B6"
+--- !u!222 &1399289933
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1399289930}
+  m_CullTransparentMesh: 1
 --- !u!1 &1980819770
 GameObject:
   m_ObjectHideFlags: 0
@@ -1081,6 +1137,10 @@ PrefabInstance:
       propertyPath: targetSpawnOffset.y
       value: -14
       objectReference: {fileID: 0}
+    - target: {fileID: 3966616532306901535, guid: 0ef109dd51803a00c90d4cb90c458194, type: 3}
+      propertyPath: controller
+      value: 
+      objectReference: {fileID: 1980819771}
     - target: {fileID: 4283228585799657320, guid: 0ef109dd51803a00c90d4cb90c458194, type: 3}
       propertyPath: m_Layer
       value: 3
@@ -1128,10 +1188,7 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 1510401294588215997, guid: 0ef109dd51803a00c90d4cb90c458194, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 808792726}
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 0ef109dd51803a00c90d4cb90c458194, type: 3}
 --- !u!4 &4528052855251655188 stripped
 Transform:

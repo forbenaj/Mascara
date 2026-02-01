@@ -56,12 +56,12 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 832829470742625249}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 1.119, y: 0.126, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 3929442006884327968}
+  m_Father: {fileID: 8407071784080300129}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1314483436455640746
 MonoBehaviour:
@@ -286,12 +286,15 @@ MonoBehaviour:
   - {fileID: 8300000, guid: 9a33088fe18e2b29f8fbe5437a10ddf7, type: 3}
   - {fileID: 8300000, guid: e8869368f429ec38eb3e9a245320ee5d, type: 3}
   attackHitbox: {fileID: 0}
-  slashVfx: {fileID: 0}
+  slashVfx: {fileID: 1314483436455640746}
   animator: {fileID: 2491851685359478857}
   spriteRenderer: {fileID: 2554235812716883465}
   audioSource: {fileID: 2979231087659986961}
   jumpClip: {fileID: 8300000, guid: 1d80f650be9468b08b182bd25de197d4, type: 3}
   landClip: {fileID: 8300000, guid: 1f1ee69a5d1f77e388b760f42e8ac23d, type: 3}
+  attackVolume: 0.8
+  jumpVolume: 1
+  landVolume: 0.5
   controlsLocked: 0
 --- !u!114 &4192566789501123456
 MonoBehaviour:
@@ -704,7 +707,8 @@ Transform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children: []
+  m_Children:
+  - {fileID: 6042964466376679014}
   m_Father: {fileID: 9145019376742470371}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &6007689986967888792
@@ -735,8 +739,7 @@ Transform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children:
-  - {fileID: 6042964466376679014}
+  m_Children: []
   m_Father: {fileID: 9145019376742470371}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &7246537846575744766

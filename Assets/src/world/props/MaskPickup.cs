@@ -209,7 +209,10 @@ public class MaskPickup : MonoBehaviour
         var candidate = rb != null ? rb.transform : other.transform.root;
         if (candidate == null || !candidate.CompareTag(playerTag)) return;
         CachePlayer(candidate);
-        StickToPlayer();
+        if (GetDistanceToPlayer() <= stickDistance)
+        {
+            StickToPlayer();
+        }
     }
 
     private void OnTriggerExit2D(Collider2D other)
@@ -289,7 +292,8 @@ public class MaskPickup : MonoBehaviour
 
     private void SetMinScale()
     {
-        _spriteTransform.localScale = _spriteBaseScale * minScaleFactor;
+        transform.localScale = _rootBaseScale * minScaleFactor;
+        _spriteTransform.localScale = _spriteBaseScale;
     }
 
     private void Flash()

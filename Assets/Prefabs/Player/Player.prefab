@@ -373,6 +373,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::GroundCheck
   groundMask:
     serializedVersion: 2
-    m_Bits: 8
+    m_Bits: 520
   coyoteTime: 0.05
   skinDepth: 0.02

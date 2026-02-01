@@ -6,7 +6,7 @@ using UnityEngine;
 public class GroundCheck : MonoBehaviour
 {
     [Tooltip("Layers considered ground.")]
-    public LayerMask groundMask = -1; // all layers by default; set to Ground in inspector
+    public LayerMask groundMask = -1; // set to Ground/PlatformSurface; auto-fill if empty
 
     [Tooltip("Seconds to buffer grounded after leaving ground (coyote time).")]
     public float coyoteTime = 0.05f;
@@ -23,6 +23,12 @@ public class GroundCheck : MonoBehaviour
     {
         _col = GetComponent<BoxCollider2D>();
         _col.isTrigger = true;
+        // Auto-fill mask if none set
+        if (groundMask == 0)
+        {
+            int mask = LayerMask.GetMask("Ground", "PlatformSurface");
+            groundMask = mask != 0 ? mask : -1;
+        }
     }
 
     private void FixedUpdate()

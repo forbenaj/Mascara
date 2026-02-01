@@ -1569,7 +1569,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::RoomDoor
   doorId: Door2Boss
   targetRoomId: RoomBoss
-  targetSpawnOffset: {x: 0, y: 0}
+  targetSpawnOffset: {x: -14, y: -8}
   facing: {x: -1, y: 0}
   locked: 0
 --- !u!61 &744789704395842003

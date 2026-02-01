@@ -14,6 +14,8 @@ public class CameraFollowRoom : MonoBehaviour
     private RoomManager _roomManager;
     private Vector3 _velocity;
     private Room _lastRoom;
+    private Room _queuedRoom;
+    private bool _pendingSnap;
 
     private void Awake()
     {
@@ -25,9 +27,10 @@ public class CameraFollowRoom : MonoBehaviour
 #endif
     }
 
-    private void FixedUpdate()
+    private void LateUpdate()
     {
-        if (_roomManager == null || _roomManager.CurrentRoom == null) return;
+        var currentRoom = _queuedRoom != null ? _queuedRoom : _roomManager?.CurrentRoom;
+        if (currentRoom == null) return;
 
         if (_player == null)
         {
@@ -36,21 +39,23 @@ public class CameraFollowRoom : MonoBehaviour
             if (_player == null) return;
         }
 
-        var room = _roomManager.CurrentRoom;
-        bool roomChanged = room != _lastRoom;
+        var room = currentRoom;
+        bool roomChanged = room != _lastRoom || _pendingSnap;
         _lastRoom = room;
 
         var roomPos = room.transform.position;
+        var roomScale = room.transform.lossyScale;
+        var scaledSize = Vector2.Scale(room.size, new Vector2(Mathf.Abs(roomScale.x), Mathf.Abs(roomScale.y)));
         var halfCam = new Vector2(_cam.orthographicSize * _cam.aspect, _cam.orthographicSize);
 
-        // Room extents
-        var halfRoom = room.size * 0.5f;
+        // Room extents (considering transform scale)
+        var halfRoom = scaledSize * 0.5f;
         var min = roomPos - (Vector3)halfRoom;
         var max = roomPos + (Vector3)halfRoom;
 
         Vector3 targetPos;
-        bool fitsX = room.size.x <= halfCam.x * 2f;
-        bool fitsY = room.size.y <= halfCam.y * 2f;
+        bool fitsX = scaledSize.x <= halfCam.x * 2f;
+        bool fitsY = scaledSize.y <= halfCam.y * 2f;
 
         if (fitsX && fitsY)
         {
@@ -66,10 +71,28 @@ public class CameraFollowRoom : MonoBehaviour
         if (roomChanged)
         {
             SnapInternal(targetPos, room);
+            _pendingSnap = false;
+            _queuedRoom = null;
         }
         else
         {
-            transform.position = Vector3.SmoothDamp(transform.position, targetPos, ref _velocity, smoothTime);
+            var newPos = Vector3.SmoothDamp(transform.position, targetPos, ref _velocity, smoothTime, Mathf.Infinity, Time.deltaTime);
+
+            bool clampX = !fitsX && (Mathf.Approximately(targetPos.x, min.x + halfCam.x) || Mathf.Approximately(targetPos.x, max.x - halfCam.x));
+            bool clampY = !fitsY && (Mathf.Approximately(targetPos.y, min.y + halfCam.y) || Mathf.Approximately(targetPos.y, max.y - halfCam.y));
+
+            if (clampX)
+            {
+                newPos.x = targetPos.x;
+                _velocity.x = 0f;
+            }
+            if (clampY)
+            {
+                newPos.y = targetPos.y;
+                _velocity.y = 0f;
+            }
+
+            transform.position = newPos;
         }
     }
 
@@ -79,9 +102,8 @@ public class CameraFollowRoom : MonoBehaviour
         _roomManager ??= room != null ? room.GetComponentInParent<RoomManager>() : _roomManager;
         _player = player != null ? player : _player;
         if (room == null) return;
-
-        var targetPos = CalculateTarget(room, _player);
-        SnapInternal(targetPos, room);
+        _queuedRoom = room;
+        _pendingSnap = true;
     }
 
     private void SnapInternal(Vector3 targetPos, Room room)
@@ -94,13 +116,15 @@ public class CameraFollowRoom : MonoBehaviour
     private Vector3 CalculateTarget(Room room, Transform player)
     {
         var roomPos = room.transform.position;
+        var roomScale = room.transform.lossyScale;
+        var scaledSize = Vector2.Scale(room.size, new Vector2(Mathf.Abs(roomScale.x), Mathf.Abs(roomScale.y)));
         var halfCam = new Vector2(_cam.orthographicSize * _cam.aspect, _cam.orthographicSize);
-        var halfRoom = room.size * 0.5f;
+        var halfRoom = scaledSize * 0.5f;
         var min = roomPos - (Vector3)halfRoom;
         var max = roomPos + (Vector3)halfRoom;
 
-        bool fitsX = room.size.x <= halfCam.x * 2f;
-        bool fitsY = room.size.y <= halfCam.y * 2f;
+        bool fitsX = scaledSize.x <= halfCam.x * 2f;
+        bool fitsY = scaledSize.y <= halfCam.y * 2f;
 
         if (fitsX && fitsY)
         {
